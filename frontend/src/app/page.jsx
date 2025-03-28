@@ -31,19 +31,19 @@ const Home = () => {
                 Home
               </a>
               <a
-                href="#"
+                href="/login"
                 className="text-lg font-semibold text-gray-600 transition duration-100 hover:text-indigo-500 active:text-indigo-700"
               >
-                Features
+                Login
               </a>
               <a
-                href="#"
+                href="/signup"
                 className="text-lg font-semibold text-gray-600 transition duration-100 hover:text-indigo-500 active:text-indigo-700"
               >
-                Pricing
+                Register
               </a>
               <a
-                href="#"
+                href="/about"
                 className="text-lg font-semibold text-gray-600 transition duration-100 hover:text-indigo-500 active:text-indigo-700"
               >
                 About
@@ -52,10 +52,10 @@ const Home = () => {
             {/* nav - end */}
             {/* buttons - start */}
             <a
-              href="#"
+              href="/contact"
               className="hidden rounded-lg bg-gray-200 px-8 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:bg-gray-300 focus-visible:ring active:text-gray-700 md:text-base lg:inline-block"
             >
-              Contact Sales
+              Contact Us
             </a>
             <button
               type="button"
