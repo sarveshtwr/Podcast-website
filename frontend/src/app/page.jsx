@@ -92,18 +92,15 @@ const Home = () => {
                 written text but is random.
               </p>
               <div className="flex flex-col gap-2.5 sm:flex-row sm:justify-center lg:justify-start">
-                <a
-                  href="#"
-                  className="inline-block rounded-lg bg-indigo-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 hover:bg-indigo-600 focus-visible:ring active:bg-indigo-700 md:text-base"
-                >
-                  Start now
-                </a>
-                <a
-                  href="#"
-                  className="inline-block rounded-lg bg-gray-200 px-8 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:bg-gray-300 focus-visible:ring active:text-gray-700 md:text-base"
-                >
-                  Take tour
-                </a>
+                <form className="flex w-full gap-2 md:max-w-md">
+                  <input
+                    placeholder="Email"
+                    className="w-full flex-1 rounded border bg-gray-50 px-3 py-2 text-gray-800 placeholder-gray-500 outline-none ring-indigo-300 transition duration-100 focus:ring"
+                  />
+                  <button className="inline-block rounded bg-indigo-500 px-8 py-2 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 hover:bg-indigo-600 focus-visible:ring active:bg-indigo-700 md:text-base">
+                    Sign up
+                  </button>
+                </form>
               </div>
             </div>
             {/* content - end */}
