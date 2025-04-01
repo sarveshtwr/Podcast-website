@@ -3,38 +3,38 @@ import React from "react";
 const Footer = () => {
   return (
     <div>
-      <div className=" bg-gray-100 md:bg-gray-300 dark:bg-neutral-700 pt-4 sm:pt-10 lg:pt-12">
+      <div className="bg-white pt-4 sm:pt-10 lg:pt-12">
         <footer className="mx-auto max-w-screen-2xl px-4 md:px-8">
           <div className="flex flex-col items-center border-t pt-6">
             {/* nav - start */}
             <nav className="mb-4 flex flex-wrap justify-center gap-x-4 gap-y-2 md:justify-start md:gap-6">
               <a
                 href="#"
-                className="text-white transition duration-100 hover:text-indigo-500 active:text-indigo-600"
+                className="text-gray-500 transition duration-100 hover:text-indigo-500 active:text-indigo-600"
               >
                 About
               </a>
               <a
                 href="#"
-                className="text-white transition duration-100 hover:text-indigo-500 active:text-indigo-600"
+                className="text-gray-500 transition duration-100 hover:text-indigo-500 active:text-indigo-600"
               >
                 Investor Relations
               </a>
               <a
                 href="#"
-                className="text-white transition duration-100 hover:text-indigo-500 active:text-indigo-600"
+                className="text-gray-500 transition duration-100 hover:text-indigo-500 active:text-indigo-600"
               >
                 Jobs
               </a>
               <a
                 href="#"
-                className="text-white transition duration-100 hover:text-indigo-500 active:text-indigo-600"
+                className="text-gray-500 transition duration-100 hover:text-indigo-500 active:text-indigo-600"
               >
                 Press
               </a>
               <a
                 href="#"
-                className="text-white transition duration-100 hover:text-indigo-500 active:text-indigo-600"
+                className="text-gray-500 transition duration-100 hover:text-indigo-500 active:text-indigo-600"
               >
                 Blog
               </a>
@@ -45,7 +45,7 @@ const Footer = () => {
               <a
                 href="#"
                 target="_blank"
-                className="text-white transition duration-100 hover:text-white active:text-gray-600"
+                className="text-gray-400 transition duration-100 hover:text-gray-500 active:text-gray-600"
               >
                 <svg
                   className="h-5 w-5"
@@ -61,7 +61,7 @@ const Footer = () => {
               <a
                 href="#"
                 target="_blank"
-                className="text-white transition duration-100 hover:text-gray-500 active:text-gray-600"
+                className="text-gray-400 transition duration-100 hover:text-gray-500 active:text-gray-600"
               >
                 <svg
                   className="h-5 w-5"
@@ -77,7 +77,7 @@ const Footer = () => {
               <a
                 href="#"
                 target="_blank"
-                className="text-white transition duration-100 hover:text-gray-500 active:text-gray-600"
+                className="text-gray-400 transition duration-100 hover:text-gray-500 active:text-gray-600"
               >
                 <svg
                   className="h-5 w-5"
@@ -93,7 +93,7 @@ const Footer = () => {
               <a
                 href="#"
                 target="_blank"
-                className="text-white transition duration-100 hover:text-gray-500 active:text-gray-600"
+                className="text-gray-400 transition duration-100 hover:text-gray-500 active:text-gray-600"
               >
                 <svg
                   className="h-5 w-5"
@@ -109,7 +109,7 @@ const Footer = () => {
             </div>
             {/* social - end */}
           </div>
-          <div className="py-8 text-center text-sm text-white">
+          <div className="py-8 text-center text-sm text-gray-400">
             © 2021 - Present Flowrift. All rights reserved.
           </div>
         </footer>

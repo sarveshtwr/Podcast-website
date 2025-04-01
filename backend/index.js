@@ -13,6 +13,7 @@ app.use(
 );
 app.use(express.json());
 app.use("/user", UserRouter);
+app.use("/artist", ArtistRouter);
 
 //endpoint or route
 app.get("/", (req, res) => {
