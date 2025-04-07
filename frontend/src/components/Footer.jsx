@@ -9,16 +9,16 @@ const Footer = () => {
             {/* nav - start */}
             <nav className="mb-4 flex flex-wrap justify-center gap-x-4 gap-y-2 md:justify-start md:gap-6">
               <a
-                href="#"
+                href="/about"
                 className="text-gray-500 transition duration-100 hover:text-indigo-500 active:text-indigo-600"
               >
                 About
               </a>
               <a
-                href="#"
+                href="/contact"
                 className="text-gray-500 transition duration-100 hover:text-indigo-500 active:text-indigo-600"
               >
-                Investor Relations
+                Contact
               </a>
               <a
                 href="#"
@@ -43,7 +43,7 @@ const Footer = () => {
             {/* social - start */}
             <div className="flex gap-4">
               <a
-                href="#"
+                href="https://www.instagram.com/sarveshtwr/"
                 target="_blank"
                 className="text-gray-400 transition duration-100 hover:text-gray-500 active:text-gray-600"
               >
@@ -59,7 +59,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://x.com/sarveshtwr/"
                 target="_blank"
                 className="text-gray-400 transition duration-100 hover:text-gray-500 active:text-gray-600"
               >
@@ -75,7 +75,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://www.linkedin.com/in/sarveshtwr/"
                 target="_blank"
                 className="text-gray-400 transition duration-100 hover:text-gray-500 active:text-gray-600"
               >
@@ -91,7 +91,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://github.com/sarveshtwr/"
                 target="_blank"
                 className="text-gray-400 transition duration-100 hover:text-gray-500 active:text-gray-600"
               >
@@ -110,7 +110,7 @@ const Footer = () => {
             {/* social - end */}
           </div>
           <div className="py-8 text-center text-sm text-gray-400">
-            © 2021 - Present Flowrift. All rights reserved.
+            © 2025 - Present PodStream. All rights reserved.
           </div>
         </footer>
       </div>

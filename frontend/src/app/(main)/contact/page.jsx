@@ -217,7 +217,7 @@ const Contact = () => {
                     <h4 className="text-white font-semibold">Our address:</h4>
                     <address className="mt-1 text-neutral-400 text-sm not-italic">
                       Barhaj CBSE Classes, <br />
-                      4/4, Patel Nagar, Near Durga Mandir,
+                      3/4, Patel Nagar, Near Durga Mandir,
                       <br />
                       Deoria District, Barhaj, Uttar Pradesh - 274601
                     </address>
@@ -250,55 +250,6 @@ const Contact = () => {
                     >
                       mr.sarveshtiwari@gmail.com
                     </a>
-                  </div>
-                </div>
-                {/* End Item */}
-                {/* Item */}
-                <div className="flex gap-x-5">
-                  <svg
-                    className="shrink-0 size-6 text-neutral-500"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={24}
-                    height={24}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="m3 11 18-5v12L3 14v-3z" />
-                    <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
-                  </svg>
-                  <div className="grow">
-                    <h4 className="text-white font-semibold">We're hiring</h4>
-                    <p className="mt-1 text-neutral-400">
-                      We're thrilled to announce that we're expanding our team
-                      and looking for talented individuals like you to join us.
-                    </p>
-                    <p className="mt-2">
-                      <a
-                        className="group inline-flex items-center gap-x-2 font-medium text-sm text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline"
-                        href="#"
-                      >
-                        Job openings
-                        <svg
-                          className="shrink-0 size-4 transition group-hover:translate-x-0.5 group-hover:translate-x-0 group-focus:translate-x-0.5 group-focus:translate-x-0"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width={24}
-                          height={24}
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M5 12h14" />
-                          <path d="m12 5 7 7-7 7" />
-                        </svg>
-                      </a>
-                    </p>
                   </div>
                 </div>
                 {/* End Item */}

@@ -1,5 +1,7 @@
 const express = require("express");
 const UserRouter = require("./routers/userRouter");
+const ArtistRouter = require("./routers/artistRouter");
+const podcastRouter = require("./routers/podcastRouter");
 const cors = require("cors");
 
 const app = express();
@@ -14,6 +16,7 @@ app.use(
 app.use(express.json());
 app.use("/user", UserRouter);
 app.use("/artist", ArtistRouter);
+app.use("/podcast", podcastRouter);
 
 //endpoint or route
 app.get("/", (req, res) => {

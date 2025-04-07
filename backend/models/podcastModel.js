@@ -3,8 +3,10 @@ const mySchema = new Schema({
   title: String,
   description: { type: String },
   genre: { type: String, required: true },
-  artist: { type: String, default: "Unknown" },
+  artist: { type: String },
+  thumbnail: String,
+  fileurl: String,
   createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = model("user", mySchema);
+module.exports = model("podcast", mySchema);
