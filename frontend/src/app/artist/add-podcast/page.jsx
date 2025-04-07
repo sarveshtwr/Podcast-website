@@ -32,7 +32,7 @@ const AddPodcast = () => {
     },
   });
 
-  const handleFileUpload = (e) => {
+  const handleFileUpload = (e, field) => {
     const file = e.target.files[0];
     if (!file) toast.error("No file selected");
 
@@ -42,12 +42,12 @@ const AddPodcast = () => {
     formData.append("cloud_name", "ddsnnqpbv");
 
     axios
-      .post("https://api.cloudinary.com/v1_1/ddsnnqpbv/image/upload", formData)
+      .post(`https://api.cloudinary.com/v1_1/ddsnnqpbv/${field === 'thumbnail' ? 'image' : 'auto'}/upload`, formData)
       .then((result) => {
         console.log(result.data);
         toast.success("File uploaded successfully");
-        podcastForm.setFieldValue("thumbnail", result.data.url);
-        podcastForm.setFieldValue("fileurl", result.data.url);
+        podcastForm.setFieldValue(field, result.data.url);
+        // podcastForm.setFieldValue("fileurl", result.data.url);
       })
       .catch((err) => {
         toast.error("File upload failed");
@@ -188,7 +188,7 @@ const AddPodcast = () => {
                     <input
                       type="file"
                       id="handleFileUpload"
-                      onChange={handleFileUpload}
+                      onChange={e => handleFileUpload(e, 'thumbnail')}
                       hidden
                     />
                     Thumbnail
@@ -233,7 +233,7 @@ const AddPodcast = () => {
                     <input
                       type="file"
                       id="handleFileUpload"
-                      onChange={handleFileUpload}
+                      onChange={e => handleFileUpload(e, 'fileurl')}
                       hidden
                     />
                     File
