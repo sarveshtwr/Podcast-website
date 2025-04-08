@@ -42,7 +42,12 @@ const AddPodcast = () => {
     formData.append("cloud_name", "ddsnnqpbv");
 
     axios
-      .post(`https://api.cloudinary.com/v1_1/ddsnnqpbv/${field === 'thumbnail' ? 'image' : 'auto'}/upload`, formData)
+      .post(
+        `https://api.cloudinary.com/v1_1/ddsnnqpbv/${
+          field === "thumbnail" ? "image" : "auto"
+        }/upload`,
+        formData
+      )
       .then((result) => {
         console.log(result.data);
         toast.success("File uploaded successfully");
@@ -145,6 +150,43 @@ const AddPodcast = () => {
                 {/* Form Group */}
                 <div>
                   <label
+                    htmlFor="genre"
+                    className="block text-sm mb-2 dark:text-white"
+                  >
+                    Genre
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      id="genre"
+                      onChange={podcastForm.handleChange}
+                      value={podcastForm.values.genre}
+                      className="py-3 px-4 block border w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                      required=""
+                    />
+                    <div className="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
+                      <svg
+                        className="size-5 text-red-500"
+                        width={16}
+                        height={16}
+                        fill="currentColor"
+                        viewBox="0 0 16 16"
+                        aria-hidden="true"
+                      >
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                      </svg>
+                    </div>
+                  </div>
+                  {podcastForm.errors.genre && podcastForm.touched.genre && (
+                    <p className="text-xs text-red-600 mt-2" id="title-error">
+                      {podcastForm.errors.genre}
+                    </p>
+                  )}
+                </div>
+                {/* End Form Group */}
+                {/* Form Group */}
+                <div>
+                  <label
                     htmlFor="artist"
                     className="block text-sm mb-2 dark:text-white"
                   >
@@ -188,8 +230,8 @@ const AddPodcast = () => {
                     <input
                       type="file"
                       id="handleFileUpload"
-                      onChange={e => handleFileUpload(e, 'thumbnail')}
-                      
+                      onChange={(e) => handleFileUpload(e, "thumbnail")}
+                      hidden
                     />
                     Thumbnail
                   </label>
@@ -233,8 +275,8 @@ const AddPodcast = () => {
                     <input
                       type="file"
                       id="handleFileUpload"
-                      onChange={e => handleFileUpload(e, 'fileurl')}
-                      // hidden
+                      onChange={(e) => handleFileUpload(e, "fileurl")}
+                      hidden
                     />
                     File
                   </label>
