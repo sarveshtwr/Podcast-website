@@ -24,7 +24,7 @@ const AddPodcast = () => {
         .post("http://localhost:5000/podcast/add", values)
         .then((result) => {
           toast.success("User registered successfully.");
-          router.push("/add-podcast");
+          // router.push("/add-podcast");
         })
         .catch((err) => {
           toast.error("Something went wrong");
@@ -189,11 +189,11 @@ const AddPodcast = () => {
                       type="file"
                       id="handleFileUpload"
                       onChange={e => handleFileUpload(e, 'thumbnail')}
-                      hidden
+                      
                     />
                     Thumbnail
                   </label>
-                  <div className="relative">
+                  {/* <div className="relative">
                     <input
                       type="text"
                       id="artist"
@@ -221,7 +221,7 @@ const AddPodcast = () => {
                       <p className="text-xs text-red-600 mt-2" id="title-error">
                         {podcastForm.errors.thumbnail}
                       </p>
-                    )}
+                    )} */}
                 </div>
                 {/* End Form Group */}
                 {/* Form Group */}
@@ -234,11 +234,11 @@ const AddPodcast = () => {
                       type="file"
                       id="handleFileUpload"
                       onChange={e => handleFileUpload(e, 'fileurl')}
-                      hidden
+                      // hidden
                     />
                     File
                   </label>
-                  <div className="relative">
+                  {/* <div className="relative">
                     <input
                       type="text"
                       id="fileurl"
@@ -265,7 +265,7 @@ const AddPodcast = () => {
                       <p className="text-xs text-red-600 mt-2" id="title-error">
                         {podcastForm.errors.fileurl}
                       </p>
-                    )}
+                    )} */}
                 </div>
                 {/* End Form Group */}
                 {/* Checkbox */}
