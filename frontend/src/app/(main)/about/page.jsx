@@ -2,54 +2,93 @@ import React from "react";
 
 const About = () => {
   return (
-    <div>
-      <div className="bg-white py-6 sm:py-8 lg:py-12">
-        <div className="mx-auto max-w-screen-md px-4 md:px-8">
-          <h1 className="mb-4 text-center text-2xl font-bold text-gray-800 sm:text-3xl md:mb-6">
+    <div className="bg-gray-50 py-12">
+      <div className="mx-auto max-w-5xl px-6 lg:px-8">
+        {/* Title Section */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-extrabold text-gray-800 sm:text-5xl">
             About PodStream
           </h1>
-          <p className="mb-6 text-gray-500 sm:text-lg md:mb-8">
-            Welcome to PodStream, the ultimate destination for podcast creators
-            and listeners! Whether you want to record, share, or discover
-            amazing podcasts, PodStream has got you covered.
+          <p className="mt-4 text-gray-600 sm:text-lg">
+            Welcome to PodStream, the future of podcasting powered by voice!
+            Whether you're a creator or a listener, PodStream offers a seamless,
+            hands-free experience to record, share, and discover amazing
+            podcasts.
           </p>
-          <h2 className="mb-2 text-xl font-semibold text-gray-800 sm:text-2xl md:mb-4">
-            Fully Voice-Automated Experience
-          </h2>
-          <p className="mb-6 text-gray-500 sm:text-lg md:mb-8">
-            PodStream takes convenience to the next level with full voice
-            automation! Navigate, record, and listen to your favorite podcasts
-            hands-free using just your voice. Say commands, and let PodStream do
-            the rest—seamless, smart, and effortless.
-          </p>
-          <h2 className="mb-2 text-xl font-semibold text-gray-800 sm:text-2xl md:mb-4">
-            For Creators
-          </h2>
-          <p className="mb-6 text-gray-500 sm:text-lg md:mb-8">
-            PodStream makes podcasting effortless! Simply register, record, and
-            publish your episodes—all from one platform. No complex setups, no
-            hassle—just your voice and your story.
-          </p>
-          <blockquote className="mb-6 border-l-4 pl-4 italic text-gray-500 sm:text-lg md:mb-8 md:pl-6">
-            “Join PodStream today and be part of the podcast revolution!.”
-          </blockquote>
-          <div className="relative mb-6 overflow-hidden rounded-lg bg-gray-100 shadow-lg md:mb-8">
-            <img
-              src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&q=75&fit=crop&w=600&h=350"
-              loading="lazy"
-              alt="Photo by Minh Pham"
-              className="h-full w-full object-cover object-center"
-            />
+        </div>
+
+        {/* Features Section */}
+        <div className="space-y-12">
+          {/* Feature 1 */}
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="md:w-1/2">
+              <h2 className="text-2xl font-semibold text-gray-800">
+                Fully Voice-Operated Platform
+              </h2>
+              <p className="mt-3 text-gray-600">
+                Experience the ultimate convenience with PodStream's voice
+                automation. Navigate the platform, record episodes, and listen
+                to your favorite podcasts—all hands-free. Just say the command,
+                and let PodStream handle the rest.
+              </p>
+            </div>
+            <div className="md:w-1/2">
+              <img
+                src="about1.jpg"
+                alt="Voice Automation"
+                className="rounded-lg shadow-lg"
+              />
+            </div>
           </div>
-          <h2 className="mb-2 text-xl font-semibold text-gray-800 sm:text-2xl md:mb-4">
-            For Listeners
-          </h2>
-          <p className="text-gray-500 sm:text-lg">
-            Dive into a world of captivating conversations! By registering on
-            PodStream, you can explore a vast collection of podcasts across
-            various genres, follow your favorite creators, and enjoy seamless
-            streaming anytime, anywhere.
-          </p>
+
+          {/* Feature 2 */}
+          <div className="flex flex-col md:flex-row-reverse items-center gap-8">
+            <div className="md:w-1/2">
+              <h2 className="text-2xl font-semibold text-gray-800">
+                For Creators
+              </h2>
+              <p className="mt-3 text-gray-600">
+                PodStream empowers creators with a simple, voice-driven
+                workflow. Record, edit, and publish your episodes effortlessly.
+                No technical skills required—just your voice and your story.
+              </p>
+            </div>
+            <div className="md:w-1/2">
+              <img
+                src="/about2.jpg"
+                alt="Podcast Creators"
+                className="rounded-lg shadow-lg"
+              />
+            </div>
+          </div>
+
+          {/* Quote Section */}
+          <blockquote className="border-l-4 border-blue-500 pl-4 italic text-gray-600">
+            “PodStream is revolutionizing podcasting with voice automation. Join
+            us and be part of the future!”
+          </blockquote>
+
+          {/* Feature 3 */}
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="md:w-1/2">
+              <h2 className="text-2xl font-semibold text-gray-800">
+                For Listeners
+              </h2>
+              <p className="mt-3 text-gray-600">
+                Discover a world of captivating podcasts with just your voice.
+                Explore genres, follow creators, and enjoy hands-free streaming
+                anytime, anywhere. PodStream makes listening effortless and
+                enjoyable.
+              </p>
+            </div>
+            <div className="md:w-1/2">
+              <img
+                src="/about3.jpg"
+                alt="Podcast Listeners"
+                className="rounded-lg shadow-lg"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
