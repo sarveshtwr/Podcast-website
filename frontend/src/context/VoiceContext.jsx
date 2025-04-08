@@ -509,7 +509,7 @@ export const VoiceProvider = ({ children }) => {
     const voices = synth.getVoices();
     setVoices(voices);
     console.log(voices);
-    speech.voice = voices[5];
+    speech.voice = voices[9];
   }
 
   const checkExistenceInTranscript = (commandArray) => {

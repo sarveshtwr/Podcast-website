@@ -32,7 +32,7 @@ const AddPodcast = () => {
     },
   });
 
-  const handleFileUpload = (e, field) => {
+  const handleThumbnailUpload = (e) => {
     const file = e.target.files[0];
     if (!file) toast.error("No file selected");
 
@@ -42,19 +42,38 @@ const AddPodcast = () => {
     formData.append("cloud_name", "ddsnnqpbv");
 
     axios
-      .post(
-        `https://api.cloudinary.com/v1_1/ddsnnqpbv/${
-          field === "thumbnail" ? "image" : "auto"
-        }/upload`,
-        formData
-      )
+      .post(`https://api.cloudinary.com/v1_1/ddsnnqpbv/image/upload`, formData)
       .then((result) => {
         console.log(result.data);
         toast.success("File uploaded successfully");
-        podcastForm.setFieldValue(field, result.data.url);
+        podcastForm.setFieldValue("thumbnail", result.data.url);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("File upload failed");
+      });
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) toast.error("No file selected");
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "mypreset");
+    formData.append("cloud_name", "ddsnnqpbv");
+
+    axios
+      .post(`https://api.cloudinary.com/v1_1/ddsnnqpbv/auto/upload`, formData)
+      .then((result) => {
+        console.log(result.data);
+        toast.success("File uploaded successfully");
+        podcastForm.setFieldValue("fileurl", result.data.url);
         // podcastForm.setFieldValue("fileurl", result.data.url);
       })
       .catch((err) => {
+        console.log(err);
+
         toast.error("File upload failed");
       });
   };
@@ -230,7 +249,7 @@ const AddPodcast = () => {
                     <input
                       type="file"
                       id="handleFileUpload"
-                      onChange={(e) => handleFileUpload(e, "thumbnail")}
+                      onChange={handleThumbnailUpload}
                       hidden
                     />
                     Thumbnail
@@ -269,13 +288,13 @@ const AddPodcast = () => {
                 {/* Form Group */}
                 <div>
                   <label
-                    htmlFor="handleFileUpload"
+                    htmlFor="handleFileUpload2"
                     className="block text-sm mb-2 dark:text-white"
                   >
                     <input
                       type="file"
-                      id="handleFileUpload"
-                      onChange={(e) => handleFileUpload(e, "fileurl")}
+                      id="handleFileUpload2"
+                      onChange={handleFileUpload}
                       hidden
                     />
                     File
