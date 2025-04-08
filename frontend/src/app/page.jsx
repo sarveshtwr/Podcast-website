@@ -1,24 +1,30 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { FaPodcast } from "react-icons/fa"; // Import FaPodcast from react-icons
 import {
-  Mic,
   Play,
   Headphones,
   Search,
   Volume2,
   FastForward,
   Rewind,
+  Info,
 } from "lucide-react";
 
 const LandingPage = () => {
   return (
     <div className="flex min-h-screen flex-col">
-      {/* Navbar (unchanged) */}
+      {/* Navbar */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Mic className="h-6 w-6 text-primary" />
+          <div className="flex items-center gap-3 pl-4">
+            {" "}
+            {/* Adjusted gap and added padding-left */}
+            <FaPodcast className="h-6 w-6 text-primary" />{" "}
+            {/* Replace Mic with FaPodcast */}
             <span className="text-xl font-bold">PodStream</span>
           </div>
           <nav className="hidden md:flex gap-6">
@@ -48,18 +54,21 @@ const LandingPage = () => {
             </Link>
           </nav>
           <div className="flex items-center gap-4">
-            <Link
-              href="/login"
-              className="text-sm font-medium transition-colors hover:text-primary hidden md:block"
+            <Button
+              size="sm"
+              className="text-sm font-medium transition-colors hover:text-primary border-black border-1 cursor-pointer w-32"
+              onClick={() => (window.location.href = "/login")}
             >
-              Sign In
-            </Link>
-            <Link
-              href="/signup"
-              className="text-sm font-medium transition-colors hover:text-primary hidden md:block"
+              Login
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              className="text-sm font-medium transition-colors hover:text-primary bg-black text-white cursor-pointer w-32"
+              onClick={() => (window.location.href = "/signup")}
             >
               Register
-            </Link>
+            </Button>
           </div>
         </div>
       </header>
@@ -81,12 +90,23 @@ const LandingPage = () => {
                   platform is designed to make podcasting simple and enjoyable.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <Button size="lg" className="gap-2">
-                    Start Listening <Play className="h-5 w-5" />
-                  </Button>
-                  <Button size="lg" variant="outline">
-                    Learn More
-                  </Button>
+                  <Link href="/browse-podcast" passHref>
+                    <Button
+                      size="lg"
+                      className="gap-2 cursor-pointer border border-black rounded-md w-48"
+                    >
+                      Start Listening <Play className="h-5 w-5" />
+                    </Button>
+                  </Link>
+                  <Link href="/about" passHref>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="gap-2 cursor-pointer border border-black rounded-md w-48"
+                    >
+                      Learn More <Info className="h-5 w-5" />
+                    </Button>
+                  </Link>
                 </div>
                 <div className="flex items-center gap-4 text-sm text-gray-500">
                   <div className="flex items-center gap-2">
@@ -95,7 +115,7 @@ const LandingPage = () => {
                   </div>
                   <div className="h-1 w-1 rounded-full bg-gray-400"></div>
                   <div className="flex items-center gap-2">
-                    <Mic className="h-5 w-5" />
+                    <FaPodcast className="h-5 w-5" />
                     <span>5M+ creators worldwide</span>
                   </div>
                 </div>
@@ -108,7 +128,7 @@ const LandingPage = () => {
                   <div className="relative z-10 flex flex-col h-full">
                     <div className="flex-1 flex flex-col items-center justify-center">
                       <div className="h-24 w-24 rounded-full bg-primary/20 flex items-center justify-center">
-                        <Mic className="h-12 w-12 text-primary animate-pulse" />
+                        <FaPodcast className="h-12 w-12 text-primary animate-pulse" />
                       </div>
                       <p className="mt-4 text-center text-sm text-gray-300">
                         Listening for command...
@@ -156,59 +176,6 @@ const LandingPage = () => {
             </div>
           </div>
         </section>
-
-        {/* Features Section */}
-        <section className="w-full py-16 bg-white">
-          <div className="container mx-auto px-6 md:px-12">
-            <div className="text-center space-y-4">
-              <h2 className="text-3xl font-bold text-gray-800 sm:text-4xl">
-                Why Choose PodStream?
-              </h2>
-              <p className="text-lg text-gray-600">
-                Discover the features that make PodStream the ultimate podcast
-                platform for creators and listeners alike.
-              </p>
-            </div>
-            <div className="mt-12 grid gap-8 md:grid-cols-3">
-              <div className="text-center space-y-4">
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 mx-auto">
-                  <Search className="h-10 w-10 text-primary" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-800">
-                  Voice Search
-                </h3>
-                <p className="text-gray-600">
-                  Find podcasts effortlessly with natural language commands like
-                  "Search for tech podcasts."
-                </p>
-              </div>
-              <div className="text-center space-y-4">
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 mx-auto">
-                  <Play className="h-10 w-10 text-primary" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-800">
-                  Playback Control
-                </h3>
-                <p className="text-gray-600">
-                  Control playback with commands like "Pause," "Skip forward 30
-                  seconds," or "Play at 1.5x speed."
-                </p>
-              </div>
-              <div className="text-center space-y-4">
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 mx-auto">
-                  <Volume2 className="h-10 w-10 text-primary" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-800">
-                  Personalized Experience
-                </h3>
-                <p className="text-gray-600">
-                  Get personalized recommendations based on your listening
-                  habits and preferences.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
       </main>
 
       {/* Footer */}
@@ -216,32 +183,12 @@ const LandingPage = () => {
         <div className="container mx-auto px-6 md:px-12">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-2">
-              <Mic className="h-6 w-6 text-primary" />
+              <FaPodcast className="h-6 w-6 text-primary" />
               <span className="text-lg font-bold text-white">PodStream</span>
             </div>
             <p className="text-sm text-center md:text-left">
               © {new Date().getFullYear()} PodStream. All rights reserved.
             </p>
-            <div className="flex gap-4">
-              <Link
-                href="#"
-                className="text-sm font-medium hover:text-primary transition"
-              >
-                Terms
-              </Link>
-              <Link
-                href="#"
-                className="text-sm font-medium hover:text-primary transition"
-              >
-                Privacy
-              </Link>
-              <Link
-                href="#"
-                className="text-sm font-medium hover:text-primary transition"
-              >
-                Contact
-              </Link>
-            </div>
           </div>
         </div>
       </footer>

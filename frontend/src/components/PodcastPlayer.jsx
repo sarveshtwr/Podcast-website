@@ -1,29 +1,36 @@
-'use client';
-import React from 'react';
-import { usePlayer } from '@/context/PlayerContext';
-import { 
-  IconPlayerPause, 
-  IconPlayerPlay, 
-  IconMicrophone, 
+"use client";
+import React from "react";
+import { usePlayer } from "@/context/PlayerContext";
+import {
+  IconPlayerPause,
+  IconPlayerPlay,
+  IconMicrophone,
   IconVolume,
   IconPlayerTrackNext,
-  IconPlayerTrackPrev
-} from '@tabler/icons-react';
+  IconPlayerTrackPrev,
+} from "@tabler/icons-react";
 
 const PodcastPlayer = () => {
-  const { 
-    currentTrack, 
-    isPlaying, 
-    duration, 
-    currentTime, 
-    togglePlay, 
-    seekTo, 
-    formatTime 
+  const {
+    currentTrack,
+    isPlaying,
+    duration,
+    currentTime,
+    togglePlay,
+    seekTo,
+    formatTime,
+    volume, // Add volume from context
+    setVolume, // Add setVolume from context
   } = usePlayer();
 
   const handleSeek = (e) => {
     const newTime = parseFloat(e.target.value);
     seekTo(newTime);
+  };
+
+  const handleVolumeChange = (e) => {
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume); // Update the volume in the context
   };
 
   if (!currentTrack) return null;
@@ -34,8 +41,8 @@ const PodcastPlayer = () => {
         <div className="flex items-center gap-4">
           {/* Thumbnail */}
           <div className="w-12 h-12 rounded-lg overflow-hidden">
-            <img 
-              src={currentTrack.thumbnail || "/default-podcast.png"} 
+            <img
+              src={currentTrack.thumbnail || "/default-podcast.png"}
               alt={currentTrack.title}
               className="w-full h-full object-cover"
             />
@@ -57,7 +64,7 @@ const PodcastPlayer = () => {
             <button className="text-gray-400 hover:text-purple-600 transition-colors">
               <IconPlayerTrackPrev size={24} />
             </button>
-            
+
             <button
               onClick={togglePlay}
               className="w-10 h-10 flex items-center justify-center rounded-full bg-purple-600 text-white hover:bg-purple-700 transition-colors"
@@ -73,9 +80,19 @@ const PodcastPlayer = () => {
               <IconPlayerTrackNext size={24} />
             </button>
 
-            <button className="text-gray-400 hover:text-purple-600 transition-colors">
-              <IconVolume size={24} />
-            </button>
+            {/* Volume Control */}
+            <div className="flex items-center gap-2">
+              <IconVolume size={24} className="text-gray-400" />
+              <input
+                type="range"
+                min={0}
+                max={1}
+                step={0.01}
+                value={volume || 0.5} // Default volume to 0.5 if undefined
+                onChange={handleVolumeChange}
+                className="h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer range-sm"
+              />
+            </div>
           </div>
         </div>
 

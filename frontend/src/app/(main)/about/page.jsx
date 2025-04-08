@@ -2,8 +2,8 @@ import React from "react";
 
 const About = () => {
   return (
-    <div className="bg-gray-50 py-12">
-      <div className="mx-auto max-w-5xl px-6 lg:px-8">
+    <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 min-h-screen py-12">
+      <div className="mx-auto max-w-5xl px-6 lg:px-8 bg-white rounded-lg shadow-lg p-8">
         {/* Title Section */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-extrabold text-gray-800 sm:text-5xl">
