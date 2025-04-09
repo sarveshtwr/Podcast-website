@@ -1,12 +1,24 @@
 "use client";
+
 import axios from "axios";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import React from "react";
 import toast from "react-hot-toast";
+import * as Yup from "yup";
 
 const AddPodcast = () => {
   const router = useRouter();
+
+  // Validation schema using Yup
+  const validationSchema = Yup.object({
+    title: Yup.string().required("Title is required"),
+    description: Yup.string().required("Description is required"),
+    genre: Yup.string().required("Genre is required"),
+    artist: Yup.string().required("Artist name is required"),
+    thumbnail: Yup.string().required("Thumbnail is required"),
+    fileurl: Yup.string().required("Podcast file is required"),
+  });
 
   const podcastForm = useFormik({
     initialValues: {
@@ -17,9 +29,9 @@ const AddPodcast = () => {
       thumbnail: "",
       fileurl: "",
     },
+    validationSchema,
     onSubmit: (values) => {
-      console.log(values);
-      //send values to backend
+      // Send values to backend
       axios
         .post("http://localhost:5000/podcast/add", values)
         .then((result) => {
@@ -34,7 +46,10 @@ const AddPodcast = () => {
 
   const handleThumbnailUpload = (e) => {
     const file = e.target.files[0];
-    if (!file) toast.error("No file selected");
+    if (!file) {
+      toast.error("No file selected");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("file", file);
@@ -44,19 +59,20 @@ const AddPodcast = () => {
     axios
       .post(`https://api.cloudinary.com/v1_1/ddsnnqpbv/image/upload`, formData)
       .then((result) => {
-        console.log(result.data);
         toast.success("Thumbnail uploaded successfully");
         podcastForm.setFieldValue("thumbnail", result.data.url);
       })
       .catch((err) => {
-        console.log(err);
         toast.error("Thumbnail upload failed");
       });
   };
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
-    if (!file) toast.error("No file selected");
+    if (!file) {
+      toast.error("No file selected");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("file", file);
@@ -66,12 +82,10 @@ const AddPodcast = () => {
     axios
       .post(`https://api.cloudinary.com/v1_1/ddsnnqpbv/auto/upload`, formData)
       .then((result) => {
-        console.log(result.data);
         toast.success("File uploaded successfully");
         podcastForm.setFieldValue("fileurl", result.data.url);
       })
       .catch((err) => {
-        console.log(err);
         toast.error("File upload failed");
       });
   };
@@ -86,6 +100,7 @@ const AddPodcast = () => {
         </div>
         <div className="p-6">
           <form onSubmit={podcastForm.handleSubmit} className="space-y-6">
+            {/* Title */}
             <div>
               <label
                 htmlFor="title"
@@ -97,17 +112,23 @@ const AddPodcast = () => {
                 type="text"
                 id="title"
                 onChange={podcastForm.handleChange}
+                onBlur={podcastForm.handleBlur}
                 value={podcastForm.values.title}
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300"
+                className={`mt-1 block w-full px-4 py-2 border ${
+                  podcastForm.touched.title && podcastForm.errors.title
+                    ? "border-red-500"
+                    : "border-gray-300"
+                } rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300`}
                 required
               />
-              {podcastForm.errors.title && podcastForm.touched.title && (
+              {podcastForm.touched.title && podcastForm.errors.title && (
                 <p className="mt-2 text-sm text-red-600">
                   {podcastForm.errors.title}
                 </p>
               )}
             </div>
 
+            {/* Description */}
             <div>
               <label
                 htmlFor="description"
@@ -118,19 +139,26 @@ const AddPodcast = () => {
               <textarea
                 id="description"
                 onChange={podcastForm.handleChange}
+                onBlur={podcastForm.handleBlur}
                 value={podcastForm.values.description}
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300"
+                className={`mt-1 block w-full px-4 py-2 border ${
+                  podcastForm.touched.description &&
+                  podcastForm.errors.description
+                    ? "border-red-500"
+                    : "border-gray-300"
+                } rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300`}
                 rows="3"
                 required
               ></textarea>
-              {podcastForm.errors.description &&
-                podcastForm.touched.description && (
+              {podcastForm.touched.description &&
+                podcastForm.errors.description && (
                   <p className="mt-2 text-sm text-red-600">
                     {podcastForm.errors.description}
                   </p>
                 )}
             </div>
 
+            {/* Genre */}
             <div>
               <label
                 htmlFor="genre"
@@ -142,17 +170,23 @@ const AddPodcast = () => {
                 type="text"
                 id="genre"
                 onChange={podcastForm.handleChange}
+                onBlur={podcastForm.handleBlur}
                 value={podcastForm.values.genre}
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300"
+                className={`mt-1 block w-full px-4 py-2 border ${
+                  podcastForm.touched.genre && podcastForm.errors.genre
+                    ? "border-red-500"
+                    : "border-gray-300"
+                } rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300`}
                 required
               />
-              {podcastForm.errors.genre && podcastForm.touched.genre && (
+              {podcastForm.touched.genre && podcastForm.errors.genre && (
                 <p className="mt-2 text-sm text-red-600">
                   {podcastForm.errors.genre}
                 </p>
               )}
             </div>
 
+            {/* Artist */}
             <div>
               <label
                 htmlFor="artist"
@@ -164,17 +198,23 @@ const AddPodcast = () => {
                 type="text"
                 id="artist"
                 onChange={podcastForm.handleChange}
+                onBlur={podcastForm.handleBlur}
                 value={podcastForm.values.artist}
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300"
+                className={`mt-1 block w-full px-4 py-2 border ${
+                  podcastForm.touched.artist && podcastForm.errors.artist
+                    ? "border-red-500"
+                    : "border-gray-300"
+                } rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300`}
                 required
               />
-              {podcastForm.errors.artist && podcastForm.touched.artist && (
+              {podcastForm.touched.artist && podcastForm.errors.artist && (
                 <p className="mt-2 text-sm text-red-600">
                   {podcastForm.errors.artist}
                 </p>
               )}
             </div>
 
+            {/* Thumbnail */}
             <div>
               <label
                 htmlFor="thumbnail"
@@ -188,8 +228,15 @@ const AddPodcast = () => {
                 onChange={handleThumbnailUpload}
                 className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
               />
+              {podcastForm.touched.thumbnail &&
+                podcastForm.errors.thumbnail && (
+                  <p className="mt-2 text-sm text-red-600">
+                    {podcastForm.errors.thumbnail}
+                  </p>
+                )}
             </div>
 
+            {/* File */}
             <div>
               <label
                 htmlFor="file"
@@ -203,16 +250,17 @@ const AddPodcast = () => {
                 onChange={handleFileUpload}
                 className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
               />
+              {podcastForm.touched.fileurl && podcastForm.errors.fileurl && (
+                <p className="mt-2 text-sm text-red-600">
+                  {podcastForm.errors.fileurl}
+                </p>
+              )}
             </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
-              className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none"
-              style={{
-                display: "block", // Ensure the button is displayed
-                opacity: 1, // Ensure the button is visible
-                visibility: "visible", // Ensure the button is not hidden
-              }}
+              className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg bg-black text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none"
             >
               Add Podcast
             </button>
