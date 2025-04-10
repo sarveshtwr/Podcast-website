@@ -1,20 +1,40 @@
 "use client";
 import React from "react";
+import * as Yup from "yup";
 import { useFormik } from "formik";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import toast from "react-hot-toast";
+const ISSERVER = typeof window === "undefined";
+
+const LoginSchema = Yup.object().shape({
+  email: Yup.string().required("Required"),
+  password: Yup.string().required("Required"),
+});
 
 const Login = () => {
+  const router = useRouter();
+
   const loginForm = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     onSubmit: (values) => {
-      console.log("Form Submitted", values);
-      // Simulate backend call
-      setTimeout(() => {
-        alert("Login successful!");
-      }, 1000);
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/user/authenticate`, values)
+        .then((result) => {
+          !ISSERVER &&
+            localStorage.setItem("user", JSON.stringify(result.data.token));
+          toast.success("Login Successfull");
+          router.push("/browse-podcast");
+        })
+        .catch((err) => {
+          toast.error("Invalid Credentials");
+          console.log(err);
+        });
     },
+    validationSchema: LoginSchema,
   });
 
   return (

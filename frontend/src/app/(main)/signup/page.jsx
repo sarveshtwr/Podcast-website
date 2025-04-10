@@ -1,7 +1,11 @@
 "use client";
+
+import React from "react";
+import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
-import * as Yup from "yup";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string().required("Enter your name"),
@@ -25,12 +29,16 @@ const Signup = () => {
       confirmPassword: "",
     },
     onSubmit: (values) => {
-      console.log("Form Submitted", values);
-      // Simulate backend call
-      setTimeout(() => {
-        alert("User registered successfully!");
-        router.push("/login");
-      }, 1000);
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/user/register`, values)
+        .then((result) => {
+          toast.success("Signup Successful");
+          router.push("/login");
+        })
+        .catch((err) => {
+          toast.error("Signup Failed");
+          console.log(err);
+        });
     },
     validationSchema: SignupSchema,
   });
@@ -66,6 +74,7 @@ const Signup = () => {
               value={signupForm.values.name}
               className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
               placeholder="Enter your name"
+              required
             />
             {signupForm.errors.name && signupForm.touched.name && (
               <p className="text-xs text-red-500 mt-1">
@@ -89,6 +98,7 @@ const Signup = () => {
               value={signupForm.values.email}
               className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
               placeholder="Enter your email"
+              required
             />
             {signupForm.errors.email && signupForm.touched.email && (
               <p className="text-xs text-red-500 mt-1">
@@ -112,6 +122,7 @@ const Signup = () => {
               value={signupForm.values.password}
               className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
               placeholder="Enter your password"
+              required
             />
             {signupForm.errors.password && signupForm.touched.password && (
               <p className="text-xs text-red-500 mt-1">
@@ -135,6 +146,7 @@ const Signup = () => {
               value={signupForm.values.confirmPassword}
               className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
               placeholder="Confirm your password"
+              required
             />
             {signupForm.errors.confirmPassword &&
               signupForm.touched.confirmPassword && (

@@ -87,31 +87,27 @@ router.put("/update/:id", (req, res) => {
 //update
 
 router.post("/authenticate", (req, res) => {
+  console.log(req.body);
   Model.findOne(req.body)
     .then((result) => {
       if (result) {
-        //login success
-        //generate token
-        const { _id, name, email } = result;
-        const payload = { _id, name, email };
+        const { _id, fname, lname, email } = result;
+        const payload = { _id, fname, lname, email };
 
         jwt.sign(
           payload,
           process.env.JWT_SECRET,
-          { expiresIn: "2d" },
+          { expiresIn: "2 days" },
           (err, token) => {
             if (err) {
               console.log(err);
-              return res.status(500).json(err);
+              res.status(500).json({ message: "error creating token" });
             } else {
-              res.status(200).json({ token });
+              res.status(200).json({ token, fname, lname, email });
             }
           }
         );
-      } else {
-        // login failed
-        res.status(401).json({ message: "Invalid Credentials" });
-      }
+      } else res.status(401).json({ message: "Login Failed" });
     })
     .catch((err) => {
       console.log(err);
@@ -119,4 +115,28 @@ router.post("/authenticate", (req, res) => {
     });
 });
 
-module.exports = router;
+router.post("/register", async (req, res) => {
+  try {
+    const newUser = new Model(req.body);
+    const savedUser = await newUser.save();
+    res.status(201).json(savedUser);
+  } catch (error) {
+    console.error("Error during registration:", error);
+    res.status(500).json({ message: "Registration failed", error });
+  }
+});
+
+onSubmit: (values) => {
+  console.log("Submitting values:", values); // Debugging log
+  axios
+    .post(`${process.env.NEXT_PUBLIC_API_URL}/user/register`, values)
+    .then((result) => {
+      toast.success("Signup Successful");
+      router.push("/login");
+    })
+    .catch((err) => {
+      console.error("Error during signup:", err); // Debugging log
+      toast.error("Signup Failed");
+    });
+},
+  (module.exports = router);

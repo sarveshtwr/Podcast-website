@@ -2,8 +2,8 @@
 
 import axios from "axios";
 import { useFormik } from "formik";
-import { useRouter } from "next/navigation";
-import React from "react";
+import { useParams, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import toast from "react-hot-toast";
 import * as Yup from "yup";
@@ -25,8 +25,10 @@ const genreOptions = [
   { value: "Other", label: "Other" },
 ];
 
-const AddPodcast = () => {
+const UpdatePodcast = () => {
+  const { id } = useParams(); // Get the podcast ID from the URL
   const router = useRouter();
+  const [loading, setLoading] = useState(true); // Loading state
 
   // Validation schema using Yup
   const validationSchema = Yup.object({
@@ -48,19 +50,44 @@ const AddPodcast = () => {
       fileurl: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      // Send values to backend
-      axios
-        .post("http://localhost:5000/podcast/add", values)
-        .then((result) => {
-          toast.success("Podcast added successfully.");
-          router.push("/artist/podcasts");
-        })
-        .catch((err) => {
-          toast.error("Something went wrong");
-        });
+    onSubmit: async (values) => {
+      try {
+        await axios.put(`http://localhost:5000/podcast/update/${id}`, values);
+        toast.success("Podcast updated successfully!");
+        router.push("/admin/manage-podcast"); // Navigate to the manage podcast page
+      } catch (error) {
+        console.error("Error updating podcast:", error);
+        toast.error("Failed to update podcast");
+      }
     },
   });
+
+  // Fetch podcast data by ID
+  const fetchPodcastData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/podcast/getbyid/${id}`
+      );
+      const data = response.data;
+      podcastForm.setValues({
+        title: data.title,
+        description: data.description,
+        genre: data.genre,
+        artist: data.artist,
+        thumbnail: data.thumbnail,
+        fileurl: data.fileurl,
+      });
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching podcast data:", error);
+      toast.error("Failed to fetch podcast data");
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPodcastData();
+  }, [id]);
 
   const handleThumbnailUpload = (e) => {
     const file = e.target.files[0];
@@ -108,12 +135,16 @@ const AddPodcast = () => {
       });
   };
 
+  if (loading) {
+    return <h1 className="text-center mt-10">Loading...</h1>;
+  }
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-neutral-900">
       <div className="max-w-lg w-full bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-neutral-800 dark:border-neutral-700">
         <div className="text-center mt-5">
           <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
-            Add Podcast
+            Update Podcast
           </h1>
         </div>
         <div className="p-6">
@@ -282,7 +313,7 @@ const AddPodcast = () => {
               type="submit"
               className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg bg-black text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none"
             >
-              Add Podcast
+              Update Podcast
             </button>
           </form>
         </div>
@@ -291,4 +322,4 @@ const AddPodcast = () => {
   );
 };
 
-export default AddPodcast;
+export default UpdatePodcast;

@@ -23,6 +23,7 @@ const BrowsePodcast = () => {
     { value: "History", label: "History" },
     { value: "Comedy", label: "Comedy" },
     { value: "News", label: "News" },
+    { value: "Fiction", label: "Fiction" }, // Added Fiction genre
     { value: "Other", label: "Other" },
   ];
 
