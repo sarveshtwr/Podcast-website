@@ -4,8 +4,25 @@ import axios from "axios";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import React from "react";
+import Select from "react-select";
 import toast from "react-hot-toast";
 import * as Yup from "yup";
+
+const genreOptions = [
+  { value: "Technology", label: "Technology" },
+  { value: "Education", label: "Education" },
+  { value: "Health", label: "Health" },
+  { value: "Business", label: "Business" },
+  { value: "Entertainment", label: "Entertainment" },
+  { value: "Sports", label: "Sports" },
+  { value: "Music", label: "Music" },
+  { value: "Lifestyle", label: "Lifestyle" },
+  { value: "Science", label: "Science" },
+  { value: "History", label: "History" },
+  { value: "Comedy", label: "Comedy" },
+  { value: "News", label: "News" },
+  { value: "Other", label: "Other" },
+];
 
 const AddPodcast = () => {
   const router = useRouter();
@@ -14,7 +31,7 @@ const AddPodcast = () => {
   const validationSchema = Yup.object({
     title: Yup.string().required("Title is required"),
     description: Yup.string().required("Description is required"),
-    genre: Yup.string().required("Genre is required"),
+    genre: Yup.array().min(1, "At least one genre is required"),
     artist: Yup.string().required("Artist name is required"),
     thumbnail: Yup.string().required("Thumbnail is required"),
     fileurl: Yup.string().required("Podcast file is required"),
@@ -24,7 +41,7 @@ const AddPodcast = () => {
     initialValues: {
       title: "",
       description: "",
-      genre: "",
+      genre: [],
       artist: "",
       thumbnail: "",
       fileurl: "",
@@ -166,18 +183,20 @@ const AddPodcast = () => {
               >
                 Genre
               </label>
-              <input
-                type="text"
-                id="genre"
-                onChange={podcastForm.handleChange}
-                onBlur={podcastForm.handleBlur}
-                value={podcastForm.values.genre}
-                className={`mt-1 block w-full px-4 py-2 border ${
-                  podcastForm.touched.genre && podcastForm.errors.genre
-                    ? "border-red-500"
-                    : "border-gray-300"
-                } rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300`}
-                required
+              <Select
+                isMulti
+                options={genreOptions}
+                value={genreOptions.filter((option) =>
+                  podcastForm.values.genre.includes(option.value)
+                )}
+                onChange={(selectedOptions) => {
+                  const selectedValues = selectedOptions.map(
+                    (option) => option.value
+                  );
+                  podcastForm.setFieldValue("genre", selectedValues);
+                }}
+                className="mt-1"
+                classNamePrefix="react-select"
               />
               {podcastForm.touched.genre && podcastForm.errors.genre && (
                 <p className="mt-2 text-sm text-red-600">

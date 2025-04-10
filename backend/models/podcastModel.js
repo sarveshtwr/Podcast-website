@@ -1,8 +1,9 @@
 const { Schema, model } = require("../connection");
+
 const mySchema = new Schema({
   title: String,
   description: { type: String },
-  genre: { type: String },
+  genre: { type: [String] }, // Updated to support multiple genres
   artist: { type: String },
   thumbnail: String,
   fileurl: String,
