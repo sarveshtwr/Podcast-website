@@ -38,55 +38,103 @@ const ManagePodcast = () => {
   };
 
   return (
-    <div className="container mx-auto">
-      <h2 className="text-center font-bold text-3xl my-6">Manage Podcasts</h2>
-      <table className="w-full border-collapse border border-gray-300">
-        <thead className="border-y-2 bg-gray-100">
-          <tr>
-            <th className="border border-gray-300 px-4 py-2">ID</th>
-            <th className="border border-gray-300 px-4 py-2">Title</th>
-            <th className="border border-gray-300 px-4 py-2">Host</th>
-            <th className="border border-gray-300 px-4 py-2">Genre</th>
-            <th className="border border-gray-300 px-4 py-2">Created At</th>
-            <th className="border border-gray-300 px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {podcastList.map((podcast) => (
-            <tr key={podcast._id} className="hover:bg-gray-50">
-              <td className="border border-gray-300 px-4 py-2">
-                {podcast._id}
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                {podcast.title}
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                {podcast.host}
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                {podcast.genre?.join(", ")}
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                {new Date(podcast.createdAt).toLocaleDateString()}
-              </td>
-              <td className="border border-gray-300 px-4 py-2 flex gap-2">
-                <button
-                  onClick={() => deletePodcast(podcast._id)}
-                  className="bg-red-500 text-white px-2 py-1 rounded"
-                >
-                  Delete
-                </button>
-                <Link
-                  href={`/update-podcast/${podcast._id}`}
-                  className="bg-green-500 text-white px-2 py-1 rounded"
-                >
-                  Update
-                </Link>
-              </td>
+    <div className="container mx-auto px-4 py-8">
+      <h2 className="text-center font-bold text-3xl text-gray-800 dark:text-white mb-6">
+        Manage Podcasts
+      </h2>
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse border border-gray-300 shadow-md rounded-lg overflow-hidden">
+          <thead className="bg-gray-100 dark:bg-gray-800">
+            <tr>
+              <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                ID
+              </th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Title
+              </th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Description
+              </th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Artist
+              </th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Genre
+              </th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Thumbnail
+              </th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                File URL
+              </th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Created At
+              </th>
+              <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Actions
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {podcastList.map((podcast) => (
+              <tr
+                key={podcast._id}
+                className="hover:bg-gray-50 dark:hover:bg-gray-700"
+              >
+                <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
+                  {podcast._id}
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
+                  {podcast.title}
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
+                  {podcast.description}
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
+                  {podcast.artist}
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
+                  {podcast.genre?.join(", ")}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  <img
+                    src={podcast.thumbnail}
+                    alt="Thumbnail"
+                    className="w-16 h-16 object-cover rounded"
+                  />
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-sm">
+                  <a
+                    href={podcast.fileurl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 underline"
+                  >
+                    File Link
+                  </a>
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
+                  {new Date(podcast.createdAt).toLocaleDateString()}
+                </td>
+                <td className="border border-gray-300 px-4 py-2 flex gap-2">
+                  <button
+                    onClick={() => deletePodcast(podcast._id)}
+                    className="bg-red-500 text-white px-3 py-1 rounded text-xs hover:bg-red-600"
+                  >
+                    Delete
+                  </button>
+                  <Link
+                    href={`/update-podcast/${podcast._id}`}
+                    className="bg-green-500 text-white px-3 py-1 rounded text-xs hover:bg-green-600"
+                  >
+                    Update
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

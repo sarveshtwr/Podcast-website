@@ -24,13 +24,13 @@ const Navbar = () => {
             Dashboard
           </Link>
           <Link
-            href="/admin/manage-users"
+            href="/admin/manage-user"
             className="text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition"
           >
             Manage Users
           </Link>
           <Link
-            href="/admin/manage-podcasts"
+            href="/admin/manage-podcast"
             className="text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition"
           >
             Manage Podcasts
@@ -51,9 +51,7 @@ const Navbar = () => {
           >
             Profile
           </Link>
-          <button
-            className="text-sm font-medium text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-500 transition"
-          >
+          <button className="text-sm font-medium text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-500 transition">
             Logout
           </button>
         </div>
