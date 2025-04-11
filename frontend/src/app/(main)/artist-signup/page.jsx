@@ -30,7 +30,7 @@ const Signup = () => {
     onSubmit: async (values) => {
       try {
         // Simulate API call
-        const response = await fetch("/api/artist-signup", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/artist/add`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
