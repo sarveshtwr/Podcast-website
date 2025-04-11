@@ -26,6 +26,9 @@ const genreOptions = [
 ];
 
 const AddPodcast = () => {
+
+  const token = localStorage.getItem("user");
+
   const router = useRouter();
 
   // Validation schema using Yup
@@ -132,11 +135,10 @@ const AddPodcast = () => {
                 onChange={podcastForm.handleChange}
                 onBlur={podcastForm.handleBlur}
                 value={podcastForm.values.title}
-                className={`mt-1 block w-full px-4 py-2 border ${
-                  podcastForm.touched.title && podcastForm.errors.title
+                className={`mt-1 block w-full px-4 py-2 border ${podcastForm.touched.title && podcastForm.errors.title
                     ? "border-red-500"
                     : "border-gray-300"
-                } rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300`}
+                  } rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300`}
                 required
               />
               {podcastForm.touched.title && podcastForm.errors.title && (
@@ -159,12 +161,11 @@ const AddPodcast = () => {
                 onChange={podcastForm.handleChange}
                 onBlur={podcastForm.handleBlur}
                 value={podcastForm.values.description}
-                className={`mt-1 block w-full px-4 py-2 border ${
-                  podcastForm.touched.description &&
-                  podcastForm.errors.description
+                className={`mt-1 block w-full px-4 py-2 border ${podcastForm.touched.description &&
+                    podcastForm.errors.description
                     ? "border-red-500"
                     : "border-gray-300"
-                } rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300`}
+                  } rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300`}
                 rows="3"
                 required
               ></textarea>
@@ -220,11 +221,10 @@ const AddPodcast = () => {
                 onChange={podcastForm.handleChange}
                 onBlur={podcastForm.handleBlur}
                 value={podcastForm.values.artist}
-                className={`mt-1 block w-full px-4 py-2 border ${
-                  podcastForm.touched.artist && podcastForm.errors.artist
+                className={`mt-1 block w-full px-4 py-2 border ${podcastForm.touched.artist && podcastForm.errors.artist
                     ? "border-red-500"
                     : "border-gray-300"
-                } rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300`}
+                  } rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300`}
                 required
               />
               {podcastForm.touched.artist && podcastForm.errors.artist && (

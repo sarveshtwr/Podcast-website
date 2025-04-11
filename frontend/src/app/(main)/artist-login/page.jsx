@@ -22,7 +22,7 @@ const ArtistLogin = () => {
     onSubmit: async (values) => {
       try {
         // Simulate API call
-        const response = await fetch("/api/artist-login", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/artist/authenticate`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -35,6 +35,7 @@ const ArtistLogin = () => {
         }
 
         const data = await response.json();
+        localStorage.setItem("artist", JSON.stringify(data.token));
         console.log("Login successful:", data);
         alert("Login successful!");
         // Redirect or handle successful login
