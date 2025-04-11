@@ -2,10 +2,12 @@ const express = require("express");
 const Model = require("../models/podcastModel");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
+const verifyToken = require("../middlewares/verifyToken");
 
 const router = express.Router();
 
-router.post("/add", (req, res) => {
+router.post("/add", verifyToken, (req, res) => {
+  req.body.artist = req.user._id; // Add the artist ID from the token to the request body
   console.log(req.body);
   new Model(req.body)
     .save()

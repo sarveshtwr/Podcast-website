@@ -2,8 +2,10 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useRouter } from "next/navigation";
 
 const ArtistLogin = () => {
+  const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
 
   const loginForm = useFormik({
@@ -29,6 +31,7 @@ const ArtistLogin = () => {
           },
           body: JSON.stringify(values),
         });
+        router.push("/artist/add-podcast");
 
         if (!response.ok) {
           throw new Error("Invalid email or password");

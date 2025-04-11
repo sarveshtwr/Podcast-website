@@ -27,7 +27,7 @@ const genreOptions = [
 
 const AddPodcast = () => {
 
-  const token = localStorage.getItem("user");
+  const token = localStorage.getItem("artist");
 
   const router = useRouter();
 
@@ -36,7 +36,6 @@ const AddPodcast = () => {
     title: Yup.string().required("Title is required"),
     description: Yup.string().required("Description is required"),
     genre: Yup.array().min(1, "At least one genre is required"),
-    artist: Yup.string().required("Artist name is required"),
     thumbnail: Yup.string().required("Thumbnail is required"),
     fileurl: Yup.string().required("Podcast file is required"),
   });
@@ -46,7 +45,6 @@ const AddPodcast = () => {
       title: "",
       description: "",
       genre: [],
-      artist: "",
       thumbnail: "",
       fileurl: "",
     },
@@ -54,7 +52,11 @@ const AddPodcast = () => {
     onSubmit: (values) => {
       // Send values to backend
       axios
-        .post("http://localhost:5000/podcast/add", values)
+        .post("http://localhost:5000/podcast/add", values, {
+          headers: {
+            'x-auth-token': token,
+          }
+        })
         .then((result) => {
           toast.success("Podcast added successfully.");
           router.push("/artist/podcasts");
@@ -207,32 +209,6 @@ const AddPodcast = () => {
               )}
             </div>
 
-            {/* Artist */}
-            <div>
-              <label
-                htmlFor="artist"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Artist
-              </label>
-              <input
-                type="text"
-                id="artist"
-                onChange={podcastForm.handleChange}
-                onBlur={podcastForm.handleBlur}
-                value={podcastForm.values.artist}
-                className={`mt-1 block w-full px-4 py-2 border ${podcastForm.touched.artist && podcastForm.errors.artist
-                    ? "border-red-500"
-                    : "border-gray-300"
-                  } rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300`}
-                required
-              />
-              {podcastForm.touched.artist && podcastForm.errors.artist && (
-                <p className="mt-2 text-sm text-red-600">
-                  {podcastForm.errors.artist}
-                </p>
-              )}
-            </div>
 
             {/* Thumbnail */}
             <div>
