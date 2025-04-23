@@ -4,6 +4,7 @@ import "./globals.css";
 import PrelineScript from "@/components/PrelineScript";
 import { PlayerProvider } from "@/context/PlayerContext";
 import { VoiceProvider } from "@/context/VoiceContext";
+import { AppProvider } from "@/context/AppContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,11 +29,11 @@ export default function RootLayout({ children }) {
       >
         <PrelineScript />
         <Toaster />
-        <VoiceProvider>
-          <PlayerProvider>
-            {children}
-          </PlayerProvider>
-        </VoiceProvider>
+        <AppProvider>
+          <VoiceProvider>
+            <PlayerProvider>{children}</PlayerProvider>
+          </VoiceProvider>
+        </AppProvider>
       </body>
     </html>
   );

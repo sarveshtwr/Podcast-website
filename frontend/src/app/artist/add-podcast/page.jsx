@@ -26,7 +26,6 @@ const genreOptions = [
 ];
 
 const AddPodcast = () => {
-
   const token = localStorage.getItem("artist");
 
   const router = useRouter();
@@ -54,12 +53,12 @@ const AddPodcast = () => {
       axios
         .post("http://localhost:5000/podcast/add", values, {
           headers: {
-            'x-auth-token': token,
-          }
+            "x-auth-token": token,
+          },
         })
         .then((result) => {
           toast.success("Podcast added successfully.");
-          router.push("/artist/podcasts");
+          router.push("/browse-podcast");
         })
         .catch((err) => {
           toast.error("Something went wrong");
@@ -137,10 +136,11 @@ const AddPodcast = () => {
                 onChange={podcastForm.handleChange}
                 onBlur={podcastForm.handleBlur}
                 value={podcastForm.values.title}
-                className={`mt-1 block w-full px-4 py-2 border ${podcastForm.touched.title && podcastForm.errors.title
+                className={`mt-1 block w-full px-4 py-2 border ${
+                  podcastForm.touched.title && podcastForm.errors.title
                     ? "border-red-500"
                     : "border-gray-300"
-                  } rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300`}
+                } rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300`}
                 required
               />
               {podcastForm.touched.title && podcastForm.errors.title && (
@@ -163,11 +163,12 @@ const AddPodcast = () => {
                 onChange={podcastForm.handleChange}
                 onBlur={podcastForm.handleBlur}
                 value={podcastForm.values.description}
-                className={`mt-1 block w-full px-4 py-2 border ${podcastForm.touched.description &&
-                    podcastForm.errors.description
+                className={`mt-1 block w-full px-4 py-2 border ${
+                  podcastForm.touched.description &&
+                  podcastForm.errors.description
                     ? "border-red-500"
                     : "border-gray-300"
-                  } rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300`}
+                } rounded-md shadow-sm focus:ring-primary focus:border-primary dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-300`}
                 rows="3"
                 required
               ></textarea>
@@ -208,7 +209,6 @@ const AddPodcast = () => {
                 </p>
               )}
             </div>
-
 
             {/* Thumbnail */}
             <div>

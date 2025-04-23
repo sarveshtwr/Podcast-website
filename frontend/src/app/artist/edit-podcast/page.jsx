@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { useFormik } from "formik";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import toast from "react-hot-toast";
@@ -25,11 +25,13 @@ const genreOptions = [
   { value: "Other", label: "Other" },
 ];
 
-const UpdatePodcast = () => {
-  const { id } = useParams(); // Get the podcast ID from the URL
+const EditPodcast = () => {
   const router = useRouter();
-  const [loading, setLoading] = useState(true); // Loading state
-  const token = localStorage.getItem("artist"); // Fetch token from localStorage
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+  const [loading, setLoading] = useState(true);
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("artist") : null;
 
   // Validation schema using Yup
   const validationSchema = Yup.object({
@@ -57,7 +59,7 @@ const UpdatePodcast = () => {
           },
         });
         toast.success("Podcast updated successfully!");
-        router.push("/admin/manage-podcast"); // Navigate to the manage podcast page
+        router.push("/artist/manage-podcast");
       } catch (error) {
         console.error("Error updating podcast:", error);
         toast.error("Failed to update podcast");
@@ -77,6 +79,15 @@ const UpdatePodcast = () => {
         }
       );
       const data = response.data;
+
+      // Verify that the podcast belongs to the current artist
+      const artistId = JSON.parse(atob(token.split(".")[1]))._id;
+      if (data.artist !== artistId) {
+        toast.error("You are not authorized to edit this podcast");
+        router.push("/artist/manage-podcast");
+        return;
+      }
+
       podcastForm.setValues({
         title: data.title,
         description: data.description,
@@ -93,8 +104,10 @@ const UpdatePodcast = () => {
   };
 
   useEffect(() => {
-    fetchPodcastData();
-  }, [id]);
+    if (id && token) {
+      fetchPodcastData();
+    }
+  }, [id, token]);
 
   const handleThumbnailUpload = (e) => {
     const file = e.target.files[0];
@@ -151,7 +164,7 @@ const UpdatePodcast = () => {
       <div className="max-w-lg w-full bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-neutral-800 dark:border-neutral-700">
         <div className="text-center mt-5">
           <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
-            Update Podcast
+            Edit Podcast
           </h1>
         </div>
         <div className="p-6">
@@ -258,6 +271,13 @@ const UpdatePodcast = () => {
                 onChange={handleThumbnailUpload}
                 className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
               />
+              {podcastForm.values.thumbnail && (
+                <img
+                  src={podcastForm.values.thumbnail}
+                  alt="Current thumbnail"
+                  className="mt-2 w-32 h-32 object-cover rounded"
+                />
+              )}
               {podcastForm.touched.thumbnail &&
                 podcastForm.errors.thumbnail && (
                   <p className="mt-2 text-sm text-red-600">
@@ -280,6 +300,12 @@ const UpdatePodcast = () => {
                 onChange={handleFileUpload}
                 className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
               />
+              {podcastForm.values.fileurl && (
+                <audio controls className="mt-2 w-full">
+                  <source src={podcastForm.values.fileurl} type="audio/mpeg" />
+                  Your browser does not support the audio element.
+                </audio>
+              )}
               {podcastForm.touched.fileurl && podcastForm.errors.fileurl && (
                 <p className="mt-2 text-sm text-red-600">
                   {podcastForm.errors.fileurl}
@@ -301,4 +327,4 @@ const UpdatePodcast = () => {
   );
 };
 
-export default UpdatePodcast;
+export default EditPodcast;

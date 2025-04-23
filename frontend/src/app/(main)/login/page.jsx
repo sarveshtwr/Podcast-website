@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
+import useAppContext from "@/context/AppContext";
 const ISSERVER = typeof window === "undefined";
 
 const LoginSchema = Yup.object().shape({
@@ -14,6 +15,7 @@ const LoginSchema = Yup.object().shape({
 
 const Login = () => {
   const router = useRouter();
+  const { setLoggedIn } = useAppContext();
 
   const loginForm = useFormik({
     initialValues: {
@@ -24,8 +26,8 @@ const Login = () => {
       axios
         .post(`${process.env.NEXT_PUBLIC_API_URL}/user/authenticate`, values)
         .then((result) => {
-          !ISSERVER &&
-            localStorage.setItem("user", JSON.stringify(result.data.token));
+          !ISSERVER && localStorage.setItem("user", result.data.token);
+          setLoggedIn(true);
           toast.success("Login Successfull");
           router.push("/browse-podcast");
         })

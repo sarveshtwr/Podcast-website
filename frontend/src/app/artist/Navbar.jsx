@@ -1,30 +1,56 @@
-"use client"; // Add this directive to make the component a Client Component
+"use client";
 
 import React from "react";
 import Link from "next/link";
+import useAppContext from "@/context/AppContext";
+import { FaPodcast } from "react-icons/fa";
+import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
+  const { logout } = useAppContext();
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center gap-2">
-          <span className="text-xl font-bold text-primary">PodStream</span>
-          <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-            | Artist Dashboard
-          </span>
+        <div className="flex items-center gap-3 pl-4">
+          <FaPodcast className="h-6 w-6 text-primary" />
+          <div className="flex items-center gap-2">
+            <span className="text-xl font-bold">PodStream</span>
+            <span className="text-sm font-medium text-gray-500">
+              | Artist Dashboard
+            </span>
+          </div>
         </div>
 
         {/* Navigation Links */}
         <nav className="hidden md:flex gap-6">
           <Link
-            href="/artist/dashboard"
+            href="/"
             className="text-sm font-medium transition-colors hover:text-primary"
           >
-            Dashboard
+            Home
           </Link>
           <Link
-            href="/artist/podcasts"
+            href="/browse-podcast"
+            className="text-sm font-medium transition-colors hover:text-primary"
+          >
+            Browse
+          </Link>
+          <Link
+            href="/about"
+            className="text-sm font-medium transition-colors hover:text-primary"
+          >
+            About
+          </Link>
+          <Link
+            href="/contact"
+            className="text-sm font-medium transition-colors hover:text-primary"
+          >
+            Contact
+          </Link>
+          <Link
+            href="/artist/manage-podcast"
             className="text-sm font-medium transition-colors hover:text-primary"
           >
             My Podcasts
@@ -35,25 +61,18 @@ const Navbar = () => {
           >
             Add Podcast
           </Link>
-          <Link
-            href="/artist/analytics"
-            className="text-sm font-medium transition-colors hover:text-primary"
-          >
-            Analytics
-          </Link>
         </nav>
 
-        {/* Profile/Logout */}
+        {/* Logout Button */}
         <div className="flex items-center gap-4">
-          <Link
-            href="/artist/profile"
-            className="text-sm font-medium transition-colors hover:text-primary"
+          <Button
+            size="sm"
+            variant="outline"
+            className="text-sm font-medium transition-colors hover:text-primary bg-red-600 text-white cursor-pointer w-32"
+            onClick={logout}
           >
-            Profile
-          </Link>
-          <button className="text-sm font-medium text-red-600 hover:text-red-700 transition">
             Logout
-          </button>
+          </Button>
         </div>
       </div>
     </header>

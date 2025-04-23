@@ -3,10 +3,13 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
+import useAppContext from "@/context/AppContext";
+import toast from "react-hot-toast";
 
 const ArtistLogin = () => {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
+  const { setLoggedIn } = useAppContext();
 
   const loginForm = useFormik({
     initialValues: {
@@ -23,27 +26,29 @@ const ArtistLogin = () => {
     }),
     onSubmit: async (values) => {
       try {
-        // Simulate API call
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/artist/authenticate`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(values),
-        });
-        router.push("/artist/add-podcast");
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/artist/authenticate`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(values),
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Invalid email or password");
         }
 
         const data = await response.json();
-        localStorage.setItem("artist", JSON.stringify(data.token));
-        console.log("Login successful:", data);
-        alert("Login successful!");
-        // Redirect or handle successful login
+        localStorage.setItem("artist", data.token);
+        setLoggedIn(true);
+        toast.success("Login successful!");
+        router.push("/artist/add-podcast");
       } catch (error) {
         setErrorMessage(error.message);
+        toast.error("Login failed. Please check your credentials.");
       }
     },
   });

@@ -1,89 +1,97 @@
 "use client";
+
+import { useState, useEffect } from "react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
-const ManageUser = () => {
-  const [userList, setUserList] = useState([]);
+export default function ManageUser() {
+  const [users, setUsers] = useState([]);
+  const router = useRouter();
 
-  // Fetch all users
-  const fetchUserData = async () => {
+  const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/user/getall");
-      setUserList(res.data);
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/getall`
+      );
+      setUsers(response.data);
     } catch (error) {
       console.error("Error fetching users:", error);
-      toast.error("Failed to fetch users");
+      toast.error("Failed to load users");
     }
   };
 
   useEffect(() => {
-    fetchUserData();
+    fetchUsers();
   }, []);
 
-  // Delete a user
-  const deleteUser = (id) => {
-    axios
-      .delete(`http://localhost:5000/user/delete/${id}`)
-      .then(() => {
-        toast.success("User Deleted Successfully");
-        fetchUserData(); // Refresh the list after deletion
-      })
-      .catch((err) => {
-        console.error("Error deleting user:", err);
+  const handleDelete = async (userId) => {
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      try {
+        await axios.delete(
+          `${process.env.NEXT_PUBLIC_API_URL}/user/delete/${userId}`
+        );
+        toast.success("User deleted successfully");
+        fetchUsers(); // Refresh the list
+      } catch (error) {
+        console.error("Error deleting user:", error);
         toast.error("Failed to delete user");
-      });
+      }
+    }
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h2 className="text-center font-bold text-4xl text-gray-800 dark:text-white mb-6">
-        Manage Users
-      </h2>
-      <div className="overflow-x-auto bg-white dark:bg-neutral-800 shadow-md rounded-lg">
-        <table className="w-full border-collapse">
-          <thead className="bg-gray-100 dark:bg-neutral-700">
+    <div className="container mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6">Manage Users</h1>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+          <thead className="bg-gray-100 dark:bg-gray-700">
             <tr>
-              <th className="px-4 py-3 text-left text-lg font-semibold text-gray-700 dark:text-gray-300">
-                ID
-              </th>
-              <th className="px-4 py-3 text-left text-lg font-semibold text-gray-700 dark:text-gray-300">
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                 Name
               </th>
-              <th className="px-4 py-3 text-left text-lg font-semibold text-gray-700 dark:text-gray-300">
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                 Email
               </th>
-              <th className="px-4 py-3 text-left text-lg font-semibold text-gray-700 dark:text-gray-300">
-                Created At
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                Joined Date
               </th>
-              <th className="px-4 py-3 text-left text-lg font-semibold text-gray-700 dark:text-gray-300">
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody>
-            {userList.map((user) => (
-              <tr
-                key={user._id}
-                className="border-t border-gray-200 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-700"
-              >
-                <td className="px-4 py-3 text-base text-gray-700 dark:text-gray-300">
-                  {user._id}
-                </td>
-                <td className="px-4 py-3 text-base text-gray-700 dark:text-gray-300">
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
+            {users.map((user) => (
+              <tr key={user._id}>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                   {user.name}
                 </td>
-                <td className="px-4 py-3 text-base text-gray-700 dark:text-gray-300">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                   {user.email}
                 </td>
-                <td className="px-4 py-3 text-base text-gray-700 dark:text-gray-300">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                   {new Date(user.createdAt).toLocaleDateString()}
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <button
-                    onClick={() => deleteUser(user._id)}
-                    className="bg-red-500 text-white px-4 py-2 rounded text-sm hover:bg-red-600"
+                    onClick={() => handleDelete(user._id)}
+                    className="inline-flex items-center px-3 py-1.5 bg-red-600 text-white text-sm font-medium rounded-md hover:bg-red-700 transition-colors duration-150 ease-in-out shadow-sm"
                   >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 mr-1.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      />
+                    </svg>
                     Delete
                   </button>
                 </td>
@@ -94,6 +102,4 @@ const ManageUser = () => {
       </div>
     </div>
   );
-};
-
-export default ManageUser;
+}

@@ -14,12 +14,12 @@ const BookmarkPage = () => {
     { name: "Admin Dashboard", path: "/admin/dashboard" },
     { name: "Manage Podcasts", path: "/admin/manage-podcast" }, // Manage Podcasts
     { name: "Manage Users", path: "/admin/manage-user" }, // Manage Users
-    { name: "Artist Login", path: "/artist/login" }, // Artist Login
-    { name: "Artist Signup", path: "/artist/signup" }, // Artist Signup
+    { name: "Artist Login", path: "/artist-login" }, // Artist Login
+    { name: "Artist Signup", path: "/artist-signup" }, // Artist Signup
     { name: "About", path: "/about" }, // About Page
     { name: "Contact", path: "/contact" }, // Contact Page
-    { name: "Login", path: "/auth/login" },
-    { name: "Register", path: "/auth/register" },
+    { name: "Login", path: "/login" },
+    { name: "Register", path: "/signup" },
   ];
 
   return (

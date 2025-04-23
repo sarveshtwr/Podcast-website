@@ -33,6 +33,8 @@ const BrowsePodcast = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/podcast/getall`
       );
       const data = await response.json();
+      console.log(data);
+      
       setPodcastList(data);
       setFilteredPodcasts(data); // Initialize filtered list
     } catch (error) {
@@ -152,6 +154,9 @@ const BrowsePodcast = () => {
                 </p>
                 <p className="text-gray-500 text-sm line-clamp-2 mb-4">
                   {podcast.description}
+                </p>
+                <p className="text-gray-500 text-sm line-clamp-2 mb-4">
+                  {podcast?.artist?.name}
                 </p>
                 <div className="flex justify-between items-center pt-2 border-t border-gray-100">
                   <span className="text-xs text-gray-500">
