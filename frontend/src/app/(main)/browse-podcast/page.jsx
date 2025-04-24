@@ -1,10 +1,107 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Select from "react-select";
+import Select, { components } from "react-select";
 import { usePlayer } from "@/context/PlayerContext";
 import { useRouter } from "next/navigation";
 import useAppContext from "@/context/AppContext";
 import Link from "next/link";
+
+const genreOptions = [
+  { value: "Technology", label: "Technology", icon: "💻" },
+  { value: "Education", label: "Education", icon: "📚" },
+  { value: "Health", label: "Health", icon: "🏥" },
+  { value: "Business", label: "Business", icon: "💼" },
+  { value: "Entertainment", label: "Entertainment", icon: "🎭" },
+  { value: "Sports", label: "Sports", icon: "⚽" },
+  { value: "Music", label: "Music", icon: "🎵" },
+  { value: "Lifestyle", label: "Lifestyle", icon: "🌟" },
+  { value: "Science", label: "Science", icon: "🔬" },
+  { value: "History", label: "History", icon: "📜" },
+  { value: "Comedy", label: "Comedy", icon: "😄" },
+  { value: "News", label: "News", icon: "📰" },
+  { value: "Fiction", label: "Fiction", icon: "📖" },
+  { value: "Other", label: "Other", icon: "✨" },
+].sort((a, b) => a.label.localeCompare(b.label));
+
+const customSelectStyles = {
+  control: (base, state) => ({
+    ...base,
+    minHeight: "42px",
+    borderRadius: "0.5rem",
+    borderColor: state.isFocused ? "#6366F1" : "#D1D5DB",
+    boxShadow: state.isFocused ? "0 0 0 2px rgba(99, 102, 241, 0.2)" : "none",
+    "&:hover": {
+      borderColor: "#6366F1",
+    },
+  }),
+  multiValue: (base) => ({
+    ...base,
+    backgroundColor: "#EEF2FF",
+    borderRadius: "0.375rem",
+    padding: "2px 2px",
+    margin: "2px",
+  }),
+  multiValueLabel: (base) => ({
+    ...base,
+    color: "#4F46E5",
+    fontSize: "0.875rem",
+    padding: "2px 4px",
+  }),
+  multiValueRemove: (base) => ({
+    ...base,
+    color: "#4F46E5",
+    borderRadius: "0.25rem",
+    "&:hover": {
+      backgroundColor: "#E0E7FF",
+      color: "#4338CA",
+    },
+  }),
+  menu: (base) => ({
+    ...base,
+    borderRadius: "0.5rem",
+    boxShadow:
+      "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+    zIndex: 50,
+  }),
+  option: (base, state) => ({
+    ...base,
+    backgroundColor: state.isSelected
+      ? "#4F46E5"
+      : state.isFocused
+      ? "#EEF2FF"
+      : "white",
+    color: state.isSelected ? "white" : "#374151",
+    padding: "8px 12px",
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    cursor: "pointer",
+    "&:active": {
+      backgroundColor: state.isSelected ? "#4F46E5" : "#E0E7FF",
+    },
+  }),
+  placeholder: (base) => ({
+    ...base,
+    color: "#9CA3AF",
+    fontSize: "0.875rem",
+  }),
+  noOptionsMessage: (base) => ({
+    ...base,
+    color: "#6B7280",
+    fontSize: "0.875rem",
+    padding: "8px 12px",
+  }),
+};
+
+const CustomOption = ({ children, ...props }) => {
+  const { data } = props;
+  return (
+    <components.Option {...props}>
+      <span>{data.icon}</span>
+      {children}
+    </components.Option>
+  );
+};
 
 const BrowsePodcast = () => {
   const router = useRouter();
@@ -15,23 +112,6 @@ const BrowsePodcast = () => {
   const [artistFilter, setArtistFilter] = useState([]); // Changed to array for multiple selection
   const [artistOptions, setArtistOptions] = useState([]);
   const { playTrack, currentTrack, isPlaying, togglePlay } = usePlayer();
-
-  const genreOptions = [
-    { value: "Technology", label: "Technology" },
-    { value: "Education", label: "Education" },
-    { value: "Health", label: "Health" },
-    { value: "Business", label: "Business" },
-    { value: "Entertainment", label: "Entertainment" },
-    { value: "Sports", label: "Sports" },
-    { value: "Music", label: "Music" },
-    { value: "Lifestyle", label: "Lifestyle" },
-    { value: "Science", label: "Science" },
-    { value: "History", label: "History" },
-    { value: "Comedy", label: "Comedy" },
-    { value: "News", label: "News" },
-    { value: "Fiction", label: "Fiction" }, // Added Fiction genre
-    { value: "Other", label: "Other" },
-  ];
 
   const fetchPodcast = async () => {
     try {
@@ -193,47 +273,8 @@ const BrowsePodcast = () => {
                       neutral20: "#e5e7eb",
                     },
                   })}
-                  styles={{
-                    control: (base) => ({
-                      ...base,
-                      boxShadow: "none",
-                      borderColor: "#e5e7eb",
-                      "&:hover": {
-                        borderColor: "#8b5cf6",
-                      },
-                    }),
-                    menu: (base) => ({
-                      ...base,
-                      zIndex: 999,
-                      position: "relative",
-                    }),
-                    menuPortal: (base) => ({
-                      ...base,
-                      zIndex: 9999,
-                    }),
-                    container: (base) => ({
-                      ...base,
-                      zIndex: 100,
-                    }),
-                    multiValue: (base) => ({
-                      ...base,
-                      backgroundColor: "#f5f3ff",
-                      borderRadius: "6px",
-                      padding: "2px",
-                    }),
-                    multiValueLabel: (base) => ({
-                      ...base,
-                      color: "#6d28d9",
-                    }),
-                    multiValueRemove: (base) => ({
-                      ...base,
-                      color: "#6d28d9",
-                      ":hover": {
-                        backgroundColor: "#ede9fe",
-                        color: "#4c1d95",
-                      },
-                    }),
-                  }}
+                  styles={customSelectStyles}
+                  components={{ Option: CustomOption }}
                   menuPortalTarget={
                     typeof document !== "undefined" ? document.body : null
                   }
@@ -272,47 +313,7 @@ const BrowsePodcast = () => {
                       neutral20: "#e5e7eb",
                     },
                   })}
-                  styles={{
-                    control: (base) => ({
-                      ...base,
-                      boxShadow: "none",
-                      borderColor: "#e5e7eb",
-                      "&:hover": {
-                        borderColor: "#8b5cf6",
-                      },
-                    }),
-                    menu: (base) => ({
-                      ...base,
-                      zIndex: 999,
-                      position: "relative",
-                    }),
-                    menuPortal: (base) => ({
-                      ...base,
-                      zIndex: 9999,
-                    }),
-                    container: (base) => ({
-                      ...base,
-                      zIndex: 100,
-                    }),
-                    multiValue: (base) => ({
-                      ...base,
-                      backgroundColor: "#f5f3ff",
-                      borderRadius: "6px",
-                      padding: "2px",
-                    }),
-                    multiValueLabel: (base) => ({
-                      ...base,
-                      color: "#6d28d9",
-                    }),
-                    multiValueRemove: (base) => ({
-                      ...base,
-                      color: "#6d28d9",
-                      ":hover": {
-                        backgroundColor: "#ede9fe",
-                        color: "#4c1d95",
-                      },
-                    }),
-                  }}
+                  styles={customSelectStyles}
                   menuPortalTarget={
                     typeof document !== "undefined" ? document.body : null
                   }
