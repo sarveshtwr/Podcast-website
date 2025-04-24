@@ -30,17 +30,20 @@ const Signup = () => {
     onSubmit: async (values) => {
       try {
         // Simulate API call
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/artist/add`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: values.name,
-            email: values.email,
-            password: values.password,
-          }),
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/artist/add`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: values.name,
+              email: values.email,
+              password: values.password,
+            }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to register. Please try again.");
@@ -49,7 +52,7 @@ const Signup = () => {
         const data = await response.json();
         console.log("Signup successful:", data);
         alert("User registered successfully!");
-        router.push("/login");
+        router.push("/artist-login");
       } catch (error) {
         setErrorMessage(error.message);
       }

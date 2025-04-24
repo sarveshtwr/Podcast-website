@@ -7,14 +7,14 @@ const AppContext = createContext();
 export const AppProvider = ({ children }) => {
   const router = useRouter();
   const [currentUser, setCurrentUser] = useState(null);
-  const [loggedIn, setLoggedIn] = useState(false);
 
-  useEffect(() => {
-    // Check localStorage after component mounts (client-side only)
-    const user = localStorage.getItem("user") || localStorage.getItem("artist");
-    setCurrentUser(user);
-    setLoggedIn(user !== null);
-  }, []);
+  // Initialize loggedIn state based on localStorage immediately
+  const [loggedIn, setLoggedIn] = useState(() => {
+    if (typeof window !== "undefined") {
+      return !!(localStorage.getItem("user") || localStorage.getItem("artist"));
+    }
+    return false;
+  });
 
   const logout = () => {
     setCurrentUser(null);

@@ -10,7 +10,7 @@ const Navbar = () => {
   const { logout } = useAppContext();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-white">
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-3 pl-4">
@@ -25,6 +25,30 @@ const Navbar = () => {
 
         {/* Navigation Links */}
         <nav className="hidden md:flex gap-6">
+          <Link
+            href="/"
+            className="text-sm font-medium transition-colors hover:text-primary"
+          >
+            Home
+          </Link>
+          <Link
+            href="/browse-podcast"
+            className="text-sm font-medium transition-colors hover:text-primary"
+          >
+            Browse
+          </Link>
+          <Link
+            href="/about"
+            className="text-sm font-medium transition-colors hover:text-primary"
+          >
+            About
+          </Link>
+          <Link
+            href="/contact"
+            className="text-sm font-medium transition-colors hover:text-primary"
+          >
+            Contact
+          </Link>
           <Link
             href="/admin/dashboard"
             className="text-sm font-medium transition-colors hover:text-primary"
