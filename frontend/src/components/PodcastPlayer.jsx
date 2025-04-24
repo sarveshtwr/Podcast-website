@@ -19,7 +19,6 @@ const PodcastPlayer = () => {
     duration,
     currentTime,
     togglePlay,
-
     seekTo,
     formatTime,
     volume,
@@ -30,6 +29,7 @@ const PodcastPlayer = () => {
     hasPrevious,
     loopMode,
     cycleLoopMode,
+    closePlayer,
   } = usePlayer();
 
   const handleSeek = (e) => {
@@ -95,9 +95,31 @@ const PodcastPlayer = () => {
   if (!currentTrack) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg backdrop-blur-md bg-opacity-95">
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg backdrop-blur-md bg-opacity-95 z-[9999]">
       <div className="container mx-auto px-4 py-3">
         <div className="flex flex-col md:flex-row gap-4">
+          {/* Close Button */}
+          <button
+            onClick={closePlayer}
+            className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 transition-colors"
+            title="Close player"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+
           {/* Thumbnail and Info */}
           <div className="flex items-center gap-4 flex-1">
             <div className="w-16 h-16 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">

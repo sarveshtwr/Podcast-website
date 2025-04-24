@@ -4,24 +4,58 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { FaPodcast } from "react-icons/fa";
-import {
-  Play,
-  Headphones,
-  Search,
-  Volume2,
-  FastForward,
-  Rewind,
-  Info,
-} from "lucide-react";
+import { Play, Headphones, Search, Info } from "lucide-react";
 import useAppContext from "@/context/AppContext";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { usePlayer } from "@/context/PlayerContext";
 
 const LandingPage = () => {
   const { loggedIn, logout } = useAppContext();
   const router = useRouter();
   const [showLoginMenu, setShowLoginMenu] = useState(false);
   const [showRegisterMenu, setShowRegisterMenu] = useState(false);
+  const [latestPodcast, setLatestPodcast] = useState(null);
+  const { playTrack, currentTrack, isPlaying, togglePlay } = usePlayer();
+
+  useEffect(() => {
+    const fetchLatestPodcast = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/podcast/getall`
+        );
+        const data = await response.json();
+        // Sort by creation date and get the latest
+        const latest = data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        )[0];
+        setLatestPodcast(latest);
+      } catch (error) {
+        console.error("Error fetching latest podcast:", error);
+      }
+    };
+
+    fetchLatestPodcast();
+  }, []);
+
+  const handlePlayLatest = () => {
+    if (latestPodcast) {
+      if (currentTrack?._id === latestPodcast._id) {
+        togglePlay();
+      } else {
+        playTrack(
+          {
+            _id: latestPodcast._id,
+            title: latestPodcast.title,
+            fileUrl: latestPodcast.fileurl,
+            thumbnail: latestPodcast.thumbnail,
+            host: latestPodcast.artist?.name,
+          },
+          []
+        );
+      }
+    }
+  };
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -149,13 +183,11 @@ const LandingPage = () => {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="flex-1">
-        {/* Hero Section */}
         <section className="w-full py-16 md:py-24 bg-gray-50">
           <div className="container mx-auto px-6 md:px-12">
             <div className="grid gap-12 lg:grid-cols-2 items-center">
-              {/* Text Content */}
+              {/* Text Content - keep existing */}
               <div className="space-y-6">
                 <h1 className="text-4xl font-bold tracking-tight text-gray-800 sm:text-5xl">
                   Your Gateway to the World of Podcasts
@@ -197,7 +229,7 @@ const LandingPage = () => {
                 </div>
               </div>
 
-              {/* Visual Content */}
+              {/* Latest Podcast Player */}
               <div className="relative h-[450px] w-full max-w-md mx-auto lg:max-w-none">
                 <div className="absolute inset-0 bg-gradient-to-b from-primary/20 to-primary/10 rounded-xl shadow-lg p-6">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-xl"></div>
@@ -207,45 +239,59 @@ const LandingPage = () => {
                         <FaPodcast className="h-12 w-12 text-primary animate-pulse" />
                       </div>
                       <p className="mt-4 text-center text-sm text-gray-300">
-                        Listening for command...
+                        Latest Episode
                       </p>
-                      <p className="mt-2 text-center text-lg font-medium text-white">
-                        "Play the latest episode of Tech Talk"
-                      </p>
+                      {latestPodcast && (
+                        <p className="mt-2 text-center text-lg font-medium text-white">
+                          {latestPodcast.title}
+                        </p>
+                      )}
                     </div>
-                    <div className="rounded-lg bg-white p-4 shadow-md">
-                      <div className="flex items-center gap-3">
-                        <Image
-                          src="/thumbnail.webp"
-                          width={60}
-                          height={60}
-                          alt="Podcast cover"
-                          className="rounded-md"
-                        />
-                        <div>
-                          <h3 className="font-medium text-gray-800">
-                            Tech Talk
-                          </h3>
-                          <p className="text-xs text-gray-500">
-                            The Future of AI
-                          </p>
+                    {latestPodcast && (
+                      <div className="rounded-lg bg-white p-4 shadow-md">
+                        <div className="flex items-center gap-3">
+                          <Image
+                            src={latestPodcast.thumbnail || "/thumbnail.webp"}
+                            width={60}
+                            height={60}
+                            alt="Podcast cover"
+                            className="rounded-md"
+                          />
+                          <div>
+                            <h3 className="font-medium text-gray-800">
+                              {latestPodcast.title}
+                            </h3>
+                            <p className="text-xs text-gray-500">
+                              By {latestPodcast.artist?.name}
+                            </p>
+                          </div>
                         </div>
+                        <button
+                          onClick={handlePlayLatest}
+                          className="mt-4 w-full py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
+                        >
+                          {currentTrack?._id === latestPodcast._id &&
+                          isPlaying ? (
+                            <>
+                              Pause
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                className="w-5 h-5 fill-current"
+                              >
+                                <rect x="6" y="4" width="4" height="16" />
+                                <rect x="14" y="4" width="4" height="16" />
+                              </svg>
+                            </>
+                          ) : (
+                            <>
+                              Play Now
+                              <Play className="h-5 w-5" />
+                            </>
+                          )}
+                        </button>
                       </div>
-                      <div className="mt-3">
-                        <div className="h-1 w-full rounded-full bg-gray-200">
-                          <div className="h-1 w-1/3 rounded-full bg-primary"></div>
-                        </div>
-                        <div className="mt-2 flex items-center justify-between text-xs text-gray-500">
-                          <span>12:34</span>
-                          <span>36:45</span>
-                        </div>
-                      </div>
-                      <div className="mt-3 flex items-center justify-between">
-                        <Rewind className="h-5 w-5 text-gray-600" />
-                        <Play className="h-8 w-8 text-primary" />
-                        <FastForward className="h-5 w-5 text-gray-600" />
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>

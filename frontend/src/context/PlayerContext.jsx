@@ -153,6 +153,15 @@ export const PlayerProvider = ({ children }) => {
     }
   };
 
+  const closePlayer = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    setIsPlaying(false);
+    setCurrentTrack(null);
+    setCurrentTrackIndex(-1);
+  };
+
   const value = {
     currentTrack,
     isPlaying,
@@ -173,6 +182,7 @@ export const PlayerProvider = ({ children }) => {
     currentTrackIndex,
     loopMode,
     cycleLoopMode,
+    closePlayer,
   };
 
   return (
