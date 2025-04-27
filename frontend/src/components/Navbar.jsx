@@ -81,6 +81,15 @@ const Navbar = () => {
                       >
                         Login as Artist
                       </button>
+                      <button
+                        onClick={() => {
+                          router.push("/admin-login");
+                          setShowLoginMenu(false);
+                        }}
+                        className="w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-300 hover:text-gray-900 flex items-center transition-all duration-150 ease-in-out"
+                      >
+                        Login as Admin
+                      </button>
                     </div>
                   </div>
                 )}

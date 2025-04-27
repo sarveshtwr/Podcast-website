@@ -20,7 +20,11 @@ export const AppProvider = ({ children }) => {
     setCurrentUser(null);
     setLoggedIn(false);
     const user = localStorage.getItem("user");
-    if (user) {
+    const admin = localStorage.getItem("admin");
+    if (admin) {
+      localStorage.removeItem("admin");
+      router.push("/admin-login");
+    } else if (user) {
       localStorage.removeItem("user");
       router.push("/login");
     } else {

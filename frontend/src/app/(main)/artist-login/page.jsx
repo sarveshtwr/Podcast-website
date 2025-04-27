@@ -5,11 +5,13 @@ import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import useAppContext from "@/context/AppContext";
 import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const ArtistLogin = () => {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
   const { setLoggedIn } = useAppContext();
+  const [showPassword, setShowPassword] = useState(false);
 
   const loginForm = useFormik({
     initialValues: {
@@ -114,21 +116,35 @@ const ArtistLogin = () => {
             >
               Password
             </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              onChange={loginForm.handleChange}
-              onBlur={loginForm.handleBlur}
-              value={loginForm.values.password}
-              className={`w-full mt-1 px-4 py-2 border ${
-                loginForm.touched.password && loginForm.errors.password
-                  ? "border-red-500"
-                  : "border-gray-300"
-              } rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500`}
-              placeholder="Enter your password"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                onChange={loginForm.handleChange}
+                onBlur={loginForm.handleBlur}
+                value={loginForm.values.password}
+                className={`w-full mt-1 px-4 py-2 border ${
+                  loginForm.touched.password && loginForm.errors.password
+                    ? "border-red-500"
+                    : "border-gray-300"
+                } rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 pr-12`}
+                placeholder="Enter your password"
+                required
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none p-1 rounded-full hover:bg-gray-100 transition-all duration-200"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? (
+                  <FaEyeSlash className="w-5 h-5" />
+                ) : (
+                  <FaEye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
             {loginForm.touched.password && loginForm.errors.password && (
               <p className="text-xs text-red-600 mt-1">
                 {loginForm.errors.password}

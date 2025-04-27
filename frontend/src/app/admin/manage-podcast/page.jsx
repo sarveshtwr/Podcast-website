@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Link from "next/link";
 import toast from "react-hot-toast";
 import Select, { components } from "react-select";
 
@@ -194,11 +193,11 @@ const ManagePodcast = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-10">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
+          <div className="animate-fade-in">
+            <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 tracking-tight">
               Manage Podcasts
             </h1>
             <p className="mt-2 text-sm text-gray-600">
@@ -207,11 +206,11 @@ const ManagePodcast = () => {
           </div>
           <button
             onClick={fetchPodcastData}
-            className="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200"
+            className="inline-flex items-center px-6 py-3 border border-transparent rounded-full shadow-lg text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 mr-2"
+              className="h-5 w-5 mr-2 animate-spin-slow"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -227,50 +226,50 @@ const ManagePodcast = () => {
           </button>
         </div>
 
-        <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-2xl">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead>
-                <tr className="bg-gray-50">
+              <thead className="bg-gradient-to-r from-indigo-50 to-purple-50">
+                <tr>
                   <th
                     scope="col"
-                    className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    className="px-6 py-4 text-left text-xs font-semibold text-indigo-600 uppercase tracking-wider"
                   >
                     Title
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    className="px-6 py-4 text-left text-xs font-semibold text-indigo-600 uppercase tracking-wider"
                   >
                     Description
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    className="px-6 py-4 text-left text-xs font-semibold text-indigo-600 uppercase tracking-wider"
                   >
                     Genre
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    className="px-6 py-4 text-left text-xs font-semibold text-indigo-600 uppercase tracking-wider"
                   >
                     Artist
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    className="px-6 py-4 text-left text-xs font-semibold text-indigo-600 uppercase tracking-wider"
                   >
                     Thumbnail
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    className="px-6 py-4 text-left text-xs font-semibold text-indigo-600 uppercase tracking-wider"
                   >
                     Created At
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    className="px-6 py-4 text-left text-xs font-semibold text-indigo-600 uppercase tracking-wider"
                   >
                     Actions
                   </th>
@@ -280,9 +279,9 @@ const ManagePodcast = () => {
                 {podcastList.map((podcast) => (
                   <tr
                     key={podcast._id}
-                    className="hover:bg-gray-50 transition-colors duration-150"
+                    className="transition-colors duration-200 hover:bg-gradient-to-r hover:from-indigo-50/30 hover:to-purple-50/30"
                   >
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-5">
                       {editingId === podcast._id ? (
                         <input
                           type="text"
@@ -294,7 +293,7 @@ const ManagePodcast = () => {
                           placeholder="Enter title"
                         />
                       ) : (
-                        <div className="text-sm font-medium text-gray-900">
+                        <div className="text-sm font-semibold text-gray-900">
                           {podcast.title}
                         </div>
                       )}
@@ -404,7 +403,7 @@ const ManagePodcast = () => {
                             alt="Thumbnail"
                             className="w-16 h-16 object-cover rounded-lg shadow-sm group-hover:ring-2 group-hover:ring-indigo-500 transition-all duration-200"
                           />
-                          <div className="hidden group-hover:block absolute -top-2 -right-2 w-5 h-5 bg-indigo-500 rounded-full flex items-center justify-center cursor-pointer">
+                          <div className="invisible group-hover:visible absolute -top-2 -right-2 w-5 h-5 bg-indigo-500 rounded-full flex items-center justify-center cursor-pointer">
                             <svg
                               className="w-3 h-3 text-white"
                               fill="none"
@@ -440,13 +439,13 @@ const ManagePodcast = () => {
                         )}
                       </div>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-5">
                       <div className="flex gap-2">
                         {editingId === podcast._id ? (
                           <>
                             <button
                               onClick={() => saveChanges(podcast._id)}
-                              className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200"
+                              className="inline-flex items-center px-4 py-2 border border-transparent rounded-full text-xs font-medium text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 transform hover:scale-105"
                             >
                               <svg
                                 className="w-4 h-4 mr-1"
@@ -465,7 +464,7 @@ const ManagePodcast = () => {
                             </button>
                             <button
                               onClick={cancelEditing}
-                              className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200"
+                              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-full text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200 transform hover:scale-105"
                             >
                               <svg
                                 className="w-4 h-4 mr-1"
@@ -487,7 +486,7 @@ const ManagePodcast = () => {
                           <>
                             <button
                               onClick={() => startEditing(podcast)}
-                              className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+                              className="inline-flex items-center px-4 py-2 border border-transparent rounded-full text-xs font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 transform hover:scale-105"
                             >
                               <svg
                                 className="w-4 h-4 mr-1"
@@ -506,7 +505,7 @@ const ManagePodcast = () => {
                             </button>
                             <button
                               onClick={() => deletePodcast(podcast._id)}
-                              className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
+                              className="inline-flex items-center px-4 py-2 border border-transparent rounded-full text-xs font-medium text-white bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200 transform hover:scale-105"
                             >
                               <svg
                                 className="w-4 h-4 mr-1"

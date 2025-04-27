@@ -38,18 +38,6 @@ const Navbar = () => {
             Browse
           </Link>
           <Link
-            href="/about"
-            className="text-sm font-medium transition-colors hover:text-primary"
-          >
-            About
-          </Link>
-          <Link
-            href="/contact"
-            className="text-sm font-medium transition-colors hover:text-primary"
-          >
-            Contact
-          </Link>
-          <Link
             href="/admin/dashboard"
             className="text-sm font-medium transition-colors hover:text-primary"
           >
@@ -66,6 +54,12 @@ const Navbar = () => {
             className="text-sm font-medium transition-colors hover:text-primary"
           >
             Manage Podcasts
+          </Link>
+          <Link
+            href="/admin/contact-messages"
+            className="text-sm font-medium transition-colors hover:text-primary"
+          >
+            Contact Messages
           </Link>
         </nav>
 

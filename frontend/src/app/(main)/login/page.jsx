@@ -1,11 +1,13 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 import useAppContext from "@/context/AppContext";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 const ISSERVER = typeof window === "undefined";
 
 const LoginSchema = Yup.object().shape({
@@ -16,6 +18,7 @@ const LoginSchema = Yup.object().shape({
 const Login = () => {
   const router = useRouter();
   const { setLoggedIn } = useAppContext();
+  const [showPassword, setShowPassword] = useState(false);
 
   const loginForm = useFormik({
     initialValues: {
@@ -82,15 +85,29 @@ const Login = () => {
             >
               Password
             </label>
-            <input
-              type="password"
-              id="password"
-              onChange={loginForm.handleChange}
-              value={loginForm.values.password}
-              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Enter your password"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                onChange={loginForm.handleChange}
+                value={loginForm.values.password}
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 pr-12"
+                placeholder="Enter your password"
+                required
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none p-1 rounded-full hover:bg-gray-100 transition-all duration-200"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? (
+                  <FaEyeSlash className="w-5 h-5" />
+                ) : (
+                  <FaEye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
           </div>
 
           {/* Remember Me */}

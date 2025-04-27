@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string().required("Enter your name"),
@@ -18,6 +19,8 @@ const SignupSchema = Yup.object().shape({
 const Signup = () => {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const signupForm = useFormik({
     initialValues: {
@@ -82,7 +85,7 @@ const Signup = () => {
 
         {/* Form */}
         <form onSubmit={signupForm.handleSubmit} className="space-y-6">
-          {/* Full Name */}
+          {/* Name */}
           <div>
             <label
               htmlFor="name"
@@ -148,20 +151,34 @@ const Signup = () => {
             >
               Password
             </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              onChange={signupForm.handleChange}
-              onBlur={signupForm.handleBlur}
-              value={signupForm.values.password}
-              className={`w-full mt-1 px-4 py-2 border ${
-                signupForm.touched.password && signupForm.errors.password
-                  ? "border-red-500"
-                  : "border-gray-300"
-              } rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500`}
-              placeholder="Enter your password"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                onChange={signupForm.handleChange}
+                onBlur={signupForm.handleBlur}
+                value={signupForm.values.password}
+                className={`w-full mt-1 px-4 py-2 border ${
+                  signupForm.touched.password && signupForm.errors.password
+                    ? "border-red-500"
+                    : "border-gray-300"
+                } rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 pr-12`}
+                placeholder="Enter your password"
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none p-1 rounded-full hover:bg-gray-100 transition-all duration-200"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? (
+                  <FaEyeSlash className="w-5 h-5" />
+                ) : (
+                  <FaEye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
             {signupForm.touched.password && signupForm.errors.password && (
               <p className="text-xs text-red-500 mt-1">
                 {signupForm.errors.password}
@@ -177,21 +194,37 @@ const Signup = () => {
             >
               Confirm Password
             </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              onChange={signupForm.handleChange}
-              onBlur={signupForm.handleBlur}
-              value={signupForm.values.confirmPassword}
-              className={`w-full mt-1 px-4 py-2 border ${
-                signupForm.touched.confirmPassword &&
-                signupForm.errors.confirmPassword
-                  ? "border-red-500"
-                  : "border-gray-300"
-              } rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500`}
-              placeholder="Confirm your password"
-            />
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                id="confirmPassword"
+                name="confirmPassword"
+                onChange={signupForm.handleChange}
+                onBlur={signupForm.handleBlur}
+                value={signupForm.values.confirmPassword}
+                className={`w-full mt-1 px-4 py-2 border ${
+                  signupForm.touched.confirmPassword &&
+                  signupForm.errors.confirmPassword
+                    ? "border-red-500"
+                    : "border-gray-300"
+                } rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 pr-12`}
+                placeholder="Confirm your password"
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none p-1 rounded-full hover:bg-gray-100 transition-all duration-200"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                aria-label={
+                  showConfirmPassword ? "Hide password" : "Show password"
+                }
+              >
+                {showConfirmPassword ? (
+                  <FaEyeSlash className="w-5 h-5" />
+                ) : (
+                  <FaEye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
             {signupForm.touched.confirmPassword &&
               signupForm.errors.confirmPassword && (
                 <p className="text-xs text-red-500 mt-1">
