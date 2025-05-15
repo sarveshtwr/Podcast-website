@@ -19,28 +19,6 @@ const About = () => {
 
         {/* Features Section */}
         <div className="space-y-12">
-          {/* Feature 1 */}
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="md:w-1/2">
-              <h2 className="text-2xl font-semibold text-gray-800">
-                Fully Voice-Operated Platform
-              </h2>
-              <p className="mt-3 text-gray-600">
-                Experience the ultimate convenience with PodStream's voice
-                automation. Navigate the platform, record episodes, and listen
-                to your favorite podcasts—all hands-free. Just say the command,
-                and let PodStream handle the rest.
-              </p>
-            </div>
-            <div className="md:w-1/2">
-              <img
-                src="about1.jpg"
-                alt="Voice Automation"
-                className="rounded-lg shadow-lg"
-              />
-            </div>
-          </div>
-
           {/* Feature 2 */}
           <div className="flex flex-col md:flex-row-reverse items-center gap-8">
             <div className="md:w-1/2">

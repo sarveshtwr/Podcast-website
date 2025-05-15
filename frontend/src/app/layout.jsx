@@ -3,7 +3,6 @@ import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import PrelineScript from "@/components/PrelineScript";
 import { PlayerProvider } from "@/context/PlayerContext";
-import { VoiceProvider } from "@/context/VoiceContext";
 import { AppProvider } from "@/context/AppContext";
 
 const geistSans = Geist({
@@ -28,11 +27,9 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <PrelineScript />
-        <Toaster />
+        <Toaster />{" "}
         <AppProvider>
-          <VoiceProvider>
-            <PlayerProvider>{children}</PlayerProvider>
-          </VoiceProvider>
+          <PlayerProvider>{children}</PlayerProvider>
         </AppProvider>
       </body>
     </html>

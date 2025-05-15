@@ -165,13 +165,15 @@ const pageDetails = [
   },
 ];
 
-const speech = new SpeechSynthesisUtterance();
 const VoiceContext = createContext();
 
 export const VoiceProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [showInstruction, setShowInstruction] = useState(false);
-
+  const [speech, setSpeech] = useState(null);
+  const [voices, setVoices] = useState([]);
+  const hasRun = useRef(false);
+  const router = useRouter();
   const [modalOptions, setModalOptions] = useState({
     icon: <FaMicrophone size={50} />,
     title: "",
@@ -179,10 +181,30 @@ export const VoiceProvider = ({ children }) => {
     centered: true,
   });
 
-  const hasRun = useRef(false);
-  const router = useRouter();
+  const fillInputUsingVoice = (cb) => {
+    if (typeof window === "undefined") return;
+    if (finalTranscript?.toLowerCase().startsWith("enter")) {
+      cb();
+    }
+  };
 
-  const [voices, setVoices] = useState([]);
+  const performActionUsingVoice = (triggerCommand, command, cb) => {
+    if (typeof window === "undefined") return;
+    if (
+      finalTranscript?.toLowerCase().startsWith(triggerCommand) &&
+      finalTranscript?.toLowerCase().includes(command)
+    ) {
+      cb();
+    }
+  };
+
+  const voiceResponse = (text) => {
+    if (typeof window === "undefined") return;
+    if (speech && window.speechSynthesis) {
+      speech.text = text;
+      window.speechSynthesis.speak(speech);
+    }
+  };
 
   const triggerModal = (
     title,
@@ -190,6 +212,7 @@ export const VoiceProvider = ({ children }) => {
     centered = true,
     icon = <FaMicrophone size={50} />
   ) => {
+    if (typeof window === "undefined") return;
     setModalOptions({
       icon,
       title,
@@ -197,6 +220,50 @@ export const VoiceProvider = ({ children }) => {
       centered,
     });
     setShowModal(true);
+  };
+
+  const voicePageNavigator = (pageName) => {
+    if (typeof window === "undefined") return;
+    const page = pageDetails.find((page) =>
+      pageName.toLowerCase().includes(page.pageName.toLowerCase())
+    );
+    if (page) {
+      voiceResponse(`Navigating to ${pageName} page...`);
+      triggerModal("Navigating...", `Navigating to ${pageName} page...`);
+      router.push(page.pagePath);
+      resetTranscript();
+    } else {
+      console.log("Page not found!");
+    }
+  };
+
+  const interpretVoiceCommand = () => {
+    if (typeof window === "undefined") return;
+    console.log("Voice Command: ", transcript);
+    if (transcript?.includes("home")) {
+      voicePageNavigator("home");
+    } else if (transcript?.includes("sign up")) {
+      voicePageNavigator("signup");
+    } else if (transcript?.includes("login")) {
+      voicePageNavigator("login");
+    } else if (transcript?.includes("contact")) {
+      voicePageNavigator("contact");
+    } else if (transcript?.includes("reset password")) {
+      voicePageNavigator("reset password");
+    } else if (transcript?.includes("hello")) {
+      voiceResponse("Hello! How can I help you?");
+    } else if (transcript?.includes("goodbye")) {
+      voiceResponse("Goodbye! Have a nice day!");
+    } else {
+      voiceResponse(
+        "Sorry, I did not understand that command. Please try again."
+      );
+    }
+  };
+
+  const checkExistenceInTranscript = (commandArray) => {
+    if (!finalTranscript) return null;
+    return commandArray.find((command) => finalTranscript.includes(command));
   };
 
   const commands = [
@@ -532,62 +599,44 @@ export const VoiceProvider = ({ children }) => {
     browserSupportsSpeechRecognition,
     finalTranscript,
   } = useSpeechRecognition({ commands, continuous: true });
-
-  if (!browserSupportsSpeechRecognition) {
-    console.log(
-      "Your browser does not support speech recognition software! Please try again with a different browser."
-    );
-  }
-
-  const voicePageNavigator = (pageName) => {
-    const page = pageDetails.find((page) =>
-      pageName.toLowerCase().includes(page.pageName.toLowerCase())
-    );
-    if (page) {
-      voiceResponse(`Navigating to ${pageName} page...`);
-      triggerModal("Navigating...", `Navigating to ${pageName} page...`);
-      router.push(page.pagePath);
-      resetTranscript();
-    } else {
-      console.log("Page not found!");
-    }
-  };
-
-  const fillInputUsingVoice = (cb) => {
-    if (finalTranscript.toLowerCase().startsWith("enter")) {
-      cb();
-    }
-  };
-
-  const performActionUsingVoice = (triggerCommand, command, cb) => {
-    if (
-      finalTranscript.toLowerCase().startsWith(triggerCommand) &&
-      finalTranscript.toLowerCase().includes(command)
-    ) {
-      cb();
-    }
-  };
-
+  // Initialize speech synthesis
   useEffect(() => {
-    if (!hasRun.current) {
-      hasRun.current = true;
-      // SpeechRecognition.startListening({ continuous: true });
-      // voiceResponse('Welcome to Vox Market. What are you shopping today?');
-      // triggerModal('Voice Assistant', 'I am listening');
+    if (typeof window === "undefined") return;
+
+    const speechUtterance = new SpeechSynthesisUtterance();
+    setSpeech(speechUtterance);
+
+    const synth = window.speechSynthesis;
+    const handleVoicesChanged = () => {
+      const availableVoices = synth.getVoices();
+      setVoices(availableVoices);
+      if (speechUtterance && availableVoices.length > 0) {
+        speechUtterance.voice = availableVoices[0];
+      }
+    };
+
+    if (synth) {
+      if ("onvoiceschanged" in synth) {
+        synth.onvoiceschanged = handleVoicesChanged;
+      } else {
+        handleVoicesChanged();
+      }
     }
-  }, []);
 
-  // open instruction modal after 3 seconds
-  useEffect(() => {
-    setTimeout(() => {
-      setShowInstruction(true);
-    }, 3000);
-  }, []);
+    return () => {
+      if (synth && "onvoiceschanged" in synth) {
+        synth.onvoiceschanged = null;
+      }
+    };
+  }, []); // No dependencies needed
 
+  // Handle voice commands
   useEffect(() => {
+    if (typeof window === "undefined" || !finalTranscript) return;
+
     if (finalTranscript === "hello vox" || finalTranscript.includes("hello")) {
       resetTranscript();
-      voiceResponse("Hi there, How can I help you?");
+      interpretVoiceCommand();
       SpeechRecognition.startListening({ continuous: true });
       triggerModal("Voice Assistant", "Hi User, How can I help you?");
     }
@@ -664,70 +713,28 @@ export const VoiceProvider = ({ children }) => {
       voiceResponse("Showing all products");
       router.push("/productView");
     }
-  }, [finalTranscript]);
+  }, [finalTranscript, resetTranscript, interpretVoiceCommand, voiceResponse]);
 
-  const voiceResponse = (text) => {
-    speech.text = text;
-    window.speechSynthesis.speak(speech);
-  };
-
-  const interpretVoiceCommand = () => {
-    // const last = event.results.length - 1;
-    // const command = event.results[last][0].transcript;
-    console.log("Voice Command: ", transcript);
-    if (transcript.includes("home")) {
-      voicePageNavigator("home");
-    } else if (transcript.includes("sign up")) {
-      voicePageNavigator("signup");
-    } else if (transcript.includes("login")) {
-      voicePageNavigator("login");
-    } else if (transcript.includes("contact")) {
-      voicePageNavigator("contact");
-    } else if (transcript.includes("reset password")) {
-      voicePageNavigator("reset password");
-    } else if (transcript.includes("hello")) {
-      voiceResponse("Hello! How can I help you?");
-    } else if (transcript.includes("goodbye")) {
-      voiceResponse("Goodbye! Have a nice day!");
-    } else {
-      voiceResponse(
-        "Sorry, I did not understand that command. Please try again."
-      );
-    }
-  };
-
+  // Initial setup
   useEffect(() => {
-    document.addEventListener("keydown", (e) => {
-      // console.log(e.code);
-      if (e.code === "Space" && e.ctrlKey) {
-        SpeechRecognition.startListening();
-      }
-    });
+    if (typeof window === "undefined" || hasRun.current) return;
+    hasRun.current = true;
   }, []);
 
+  // Instructions modal
   useEffect(() => {
-    const synth = window.speechSynthesis;
-    if ("onvoiceschanged" in synth) {
-      setVoices(voices);
-      console.log(voices);
-      synth.onvoiceschanged = loadVoices;
-    }
+    if (typeof window === "undefined") return;
+    const timer = setTimeout(() => {
+      setShowInstruction(true);
+    }, 3000);
+    return () => clearTimeout(timer);
   }, []);
 
-  const loadVoices = () => {
-    const synth = window.speechSynthesis;
-    const voices = synth.getVoices();
-    setVoices(voices);
-    console.log(voices);
-    speech.voice = voices[9];
-  };
-
-  const checkExistenceInTranscript = (commandArray) => {
-    const command = commandArray.find((command) =>
-      finalTranscript.includes(command)
+  if (!browserSupportsSpeechRecognition) {
+    console.log(
+      "Your browser does not support speech recognition software! Please try again with a different browser."
     );
-    return command;
-  };
+  }
 
   return (
     <VoiceContext.Provider
@@ -744,46 +751,41 @@ export const VoiceProvider = ({ children }) => {
         checkExistenceInTranscript,
       }}
     >
-      <div className="fixed bottom-6 right-6 flex flex-col items-end gap-2 z-50">
-        <button
-          className="w-12 h-12 rounded-full bg-[#8C52FF] text-white shadow-lg hover:bg-[#7340d3] transition-all duration-200 flex items-center justify-center"
-          onClick={() => {
-            if (listening) {
-              SpeechRecognition.stopListening();
-            } else {
-              SpeechRecognition.startListening();
-            }
-          }}
-        >
-          {listening ? (
-            <IconPlayerRecordFilled size={24} style={{ color: "white" }} />
-          ) : (
-            <FaMicrophone size={20} />
-          )}
-        </button>
-
-        {/* Transcript display */}
-        {listening && transcript && (
-          <div className="bg-[#8C52FF]/90 text-white px-4 py-2 rounded-lg max-w-xs text-sm backdrop-blur-sm">
-            {transcript}
-          </div>
-        )}
-      </div>
-
       {children}
-      <InfoModal
-        {...modalOptions}
-        showModal={showModal}
-        setShowModal={setShowModal}
-      />
-      {/* {
-        showInstruction &&
-        <div className='fixed top-0 left-0 w-full h-full bg-slate-900 opacity-90 z-20'>
-          <div className='h-full backdrop-blur-md'>
-            <InstructionModal setShowModal={setShowInstruction} />
+      {typeof window !== "undefined" && (
+        <>
+          <div className="fixed bottom-6 right-6 flex flex-col items-end gap-2 z-50">
+            <button
+              className="w-12 h-12 rounded-full bg-[#8C52FF] text-white shadow-lg hover:bg-[#7340d3] transition-all duration-200 flex items-center justify-center"
+              onClick={() => {
+                if (listening) {
+                  SpeechRecognition.stopListening();
+                } else {
+                  SpeechRecognition.startListening();
+                }
+              }}
+            >
+              {listening ? (
+                <IconPlayerRecordFilled size={24} style={{ color: "white" }} />
+              ) : (
+                <FaMicrophone size={20} />
+              )}
+            </button>
+
+            {listening && transcript && (
+              <div className="bg-[#8C52FF]/90 text-white px-4 py-2 rounded-lg max-w-xs text-sm backdrop-blur-sm">
+                {transcript}
+              </div>
+            )}
           </div>
-        </div>
-      } */}
+
+          <InfoModal
+            {...modalOptions}
+            showModal={showModal}
+            setShowModal={setShowModal}
+          />
+        </>
+      )}
     </VoiceContext.Provider>
   );
 };

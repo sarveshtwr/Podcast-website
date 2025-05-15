@@ -61,6 +61,12 @@ const Navbar = () => {
           >
             Contact Messages
           </Link>
+          <Link
+            href="/admin/about-project"
+            className="text-sm font-medium transition-colors hover:text-primary"
+          >
+            About Project
+          </Link>
         </nav>
 
         {/* Logout Button */}
